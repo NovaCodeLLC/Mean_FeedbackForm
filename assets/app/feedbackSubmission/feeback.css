@@ -1,0 +1,78 @@
+.btn-primary{
+    color: aliceblue;
+    background-color: dodgerblue;
+    border: 2px solid;
+    border-radius: 25px;
+    padding: 15px 25px;
+    position: relative;
+    left: 2.5%;
+}
+
+#nameLabel{
+    position: relative;
+    color: dimgray;
+    left: 2.5%
+}
+
+#nameBox{
+    position: relative;
+    left: 2.5%;
+    width: 42.8%;
+}
+
+#productLabel{
+    position: relative;
+    color: dimgray;
+    left: 2.5%;
+}
+
+#productBox{
+    position: relative;
+    left: 2.5%;
+    width: 42.8%;
+}
+
+#upsLabel{
+    position: relative;
+    color: dimgray;
+    left: 2.5%;
+}
+
+#upsBox {
+    position: relative;
+    left: 2.5%;
+    width: 42.8%;
+    border-color: lightgray;
+    padding: 0px 0px 10px 0px;
+}
+#downsBox {
+    position: relative;
+    left: 2.5%;
+    width: 42.8%;
+    border-color: lightgray;
+    padding: 0px 0px 10px 0px;
+}
+#downsLabel{
+    position: relative;
+    color: dimgray;
+    left: 2.5%;
+}
+
+#nameBox.ng-touched.ng-invalid{
+    border: 1px solid red;
+}
+#productBox.ng-touched.ng-invalid{
+    border: 1px solid red;
+}
+#downsBox.ng-touched.ng-invalid{
+    border: 1px solid red;
+}
+#upsBox.ng-touched.ng-invalid{
+    border: 1px solid red;
+}
+
+.alert{
+    position: relative;
+    width: 42.8%;
+    left: 2.5%;
+}
