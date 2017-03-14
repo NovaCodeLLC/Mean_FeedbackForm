@@ -6,7 +6,7 @@ var router = express.Router();
 
 var Feedback = require('../models/feedback');
 
-router.get('/api', function (req, res, next) {
+router.get('/', function (req, res, next) {
     Feedback.find()
         .exec(function (err, messages) {
             if (err) {
@@ -22,7 +22,7 @@ router.get('/api', function (req, res, next) {
         });
 });
 
-router.post('/api', function (req, res, next) {
+router.post('/', function (req, res, next) {
     var feedback = new Feedback({
         nameBox: req.body.nameBox,
         productBox: req.body.productBox,
@@ -37,13 +37,13 @@ router.post('/api', function (req, res, next) {
             });
         }
         res.status(201).json({
-            message: 'Saved message',
+            message: 'Saved feedback',
             obj: result
         });
     });
 });
 
-router.delete('/api', function(req, res, next) {
+router.delete('/', function(req, res, next) {
     Feedback.find()
         .exec(function (err, message) {
         if (err) {

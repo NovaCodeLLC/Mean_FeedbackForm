@@ -6,5 +6,6 @@ export class Feedback {
     constructor(public nameBox: string,
                 public productBox: string,
                 public upsBox: string,
-                public downsBox: string) {}
+                public downsBox: string,
+                public feedbackID?:string,) {}
 }

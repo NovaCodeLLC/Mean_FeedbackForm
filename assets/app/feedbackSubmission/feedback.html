@@ -1,78 +1,79 @@
 <form [formGroup]="feedbackForm" (ngSubmit)="submitFeedback(feedbackForm)">
-
-    <div>
-        <label for="nameBox" id="nameLabel">Name</label>
-        <br>
-        <input type="text"
-               id="nameBox"
-               class="form-control"
-               placeholder="Name"
-               formControlName="nameBox">
-        <div *ngIf="feedbackForm.get('nameBox').errors && feedbackForm.get('nameBox').touched">
-            <div *ngIf="feedbackForm.get('nameBox').errors.required"
-                 class="alert alert-danger">
-                :( Tsk Tsk. Name is a required field!
+    <div class="col-md-8 col-md-offset-2">
+        <div>
+            <label for="nameBox" id="nameLabel">Name</label>
+            <br>
+            <input type="text"
+                   id="nameBox"
+                   class="form-control"
+                   placeholder="Name"
+                   formControlName="nameBox">
+            <div *ngIf="feedbackForm.get('nameBox').errors && feedbackForm.get('nameBox').touched">
+                <div *ngIf="feedbackForm.get('nameBox').errors.required"
+                     class="alert alert-danger">
+                    :( Tsk Tsk. Name is a required field!
+                </div>
             </div>
         </div>
-    </div>
-
-    <div>
-        <label for="productBox" id="productLabel">Product / Project</label>
-        <br>
-        <input type="text"
-               id="productBox"
-               class="form-control"
-               placeholder="Product / Project Name"
-               formControlName="productBox">
-        <div *ngIf="feedbackForm.get('productBox').errors && feedbackForm.get('productBox').touched">
-            <div *ngIf="feedbackForm.get('productBox').errors.required"
-                 class="alert alert-danger">
-                :( Tsk Tsk. Product / project is a required field!
+        <div>
+            <label for="productBox" id="productLabel">Product / Project</label>
+            <br>
+            <input type="text"
+                   id="productBox"
+                   class="form-control"
+                   placeholder="Product / Project Name"
+                   formControlName="productBox">
+            <div *ngIf="feedbackForm.get('productBox').errors && feedbackForm.get('productBox').touched">
+                <div *ngIf="feedbackForm.get('productBox').errors.required"
+                     class="alert alert-danger">
+                    :( Tsk Tsk. Product / project is a required field!
+                </div>
             </div>
         </div>
-    </div>
-
-    <div>
-        <label for="upsBox" id="upsLabel">Ups</label>
-        <br>
-        <textarea formControlName="upsBox"
-                  id="upsBox"
-                  rows="10"
-                  cols="40"
-                  class="form-control"
-                  placeholder="What were the ups for the week?">
-      </textarea>
-        <div *ngIf="feedbackForm.get('upsBox').errors && feedbackForm.get('upsBox').touched">
-            <div *ngIf="feedbackForm.get('upsBox').errors.required"
-                 class="alert alert-danger">
-                :( Tsk Tsk. Weekly ups feedback required!
+        <div>
+            <label for="upsBox" id="upsLabel">Ups</label>
+            <br>
+            <textarea formControlName="upsBox"
+                      id="upsBox"
+                      rows="10"
+                      cols="40"
+                      class="form-control"
+                      placeholder="What were the ups for the week?">
+          </textarea>
+            <div *ngIf="feedbackForm.get('upsBox').errors && feedbackForm.get('upsBox').touched">
+                <div *ngIf="feedbackForm.get('upsBox').errors.required"
+                     class="alert alert-danger">
+                    :( Tsk Tsk. Weekly ups feedback required!
+                </div>
             </div>
         </div>
-    </div>
-
-    <div>
-        <label for="downsBox" id="downsLabel">Downs</label>
-        <br>
-        <textarea formControlName="downsBox"
-                  rows="10"
-                  cols="40"
-                  id="downsBox"
-                  class="form-control"
-                  placeholder="What were the downs for the week?">
-      </textarea>
-        <div *ngIf="feedbackForm.get('downsBox').errors && feedbackForm.get('downsBox').touched">
-            <div *ngIf="feedbackForm.get('downsBox').errors.required"
-                 class="alert alert-danger">
-                :( Tsk Tsk. Weekly downs feedback required!
+        <div>
+            <label for="downsBox" id="downsLabel">Downs</label>
+            <br>
+            <textarea formControlName="downsBox"
+                      rows="10"
+                      cols="40"
+                      id="downsBox"
+                      class="form-control"
+                      placeholder="What were the downs for the week?">
+          </textarea>
+            <div *ngIf="feedbackForm.get('downsBox').errors && feedbackForm.get('downsBox').touched">
+                <div *ngIf="feedbackForm.get('downsBox').errors.required"
+                     class="alert alert-danger">
+                    :( Tsk Tsk. Weekly downs feedback required!
+                </div>
             </div>
         </div>
+        <div>
+            <button class="btn btn-primary"
+                    [disabled]="!feedbackForm.valid">
+                Submit
+            </button>
+        </div>
     </div>
-
-    <div>
-        <button class="btn btn-primary"
-                [disabled]="!feedbackForm.valid">
-            Submit
-        </button>
-    </div>
-
 </form>
+
+
+
+
+
