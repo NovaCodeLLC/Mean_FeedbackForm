@@ -9,6 +9,7 @@ import { Component } from "@angular/core";
                     <li routerLinkActive="active"><a [routerLink]="['/messages']">Messenger</a></li>
                     <li routerLinkActive="active"><a [routerLink]="['/auth']">Authentication</a></li>
                     <li routerLinkActive="active"><a [routerLink]="['/feedback']">Feedback</a></li>
+                    <li routerLinkActive="active"><a [routerLink]="['/reviewFeedback']">Review</a></li>
                 </ul>
             </nav>
         </header>

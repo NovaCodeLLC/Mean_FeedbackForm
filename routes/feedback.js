@@ -8,7 +8,7 @@ var Feedback = require('../models/feedback');
 
 router.get('/', function (req, res, next) {
     Feedback.find()
-        .exec(function (err, messages) {
+        .exec(function (err, feedback) {
             if (err) {
                 return res.status(500).json({
                     title: 'An error occurred',
@@ -17,7 +17,7 @@ router.get('/', function (req, res, next) {
             }
             res.status(200).json({
                 message: 'Success',
-                obj: messages
+                obj: feedback
             });
         });
 });

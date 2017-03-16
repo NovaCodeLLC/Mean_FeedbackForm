@@ -20,6 +20,7 @@ import { routing } from "./app.routing";
 
 import { SignupComponent } from "./auth/signup.component";
 import { SigninComponent } from "./auth/signin.component";
+import {reviewFeedbackComponent} from "./reviewFeedback/reviewFeedback.component";
 
 @NgModule({
     declarations: [
@@ -33,7 +34,8 @@ import { SigninComponent } from "./auth/signin.component";
         MessageInputComponent,
         MessagesComponent,
         SignupComponent,
-        SigninComponent
+        SigninComponent,
+        reviewFeedbackComponent
     ],
     imports: [
         BrowserModule,
