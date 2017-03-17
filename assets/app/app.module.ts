@@ -21,6 +21,7 @@ import { routing } from "./app.routing";
 import { SignupComponent } from "./auth/signup.component";
 import { SigninComponent } from "./auth/signin.component";
 import {reviewFeedbackComponent} from "./reviewFeedback/reviewFeedback.component";
+import {listReviewFeedbackComponent} from "./reviewFeedback/listFeedbacks.component";
 
 @NgModule({
     declarations: [
@@ -35,7 +36,8 @@ import {reviewFeedbackComponent} from "./reviewFeedback/reviewFeedback.component
         MessagesComponent,
         SignupComponent,
         SigninComponent,
-        reviewFeedbackComponent
+        reviewFeedbackComponent,
+        listReviewFeedbackComponent
     ],
     imports: [
         BrowserModule,

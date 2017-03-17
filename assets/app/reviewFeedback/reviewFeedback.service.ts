@@ -21,10 +21,12 @@ export class reviewFeedbackService{
     getFeedback(){
         return this.http.get('http://localhost:3000/feedback')
             .map(res => {
-                let data = res.json();
-                let feedback = new Feedback(data.obj[0].nameBox, data.obj[0].productBox, data.obj[0].upsBox, data.obj[0].downsBox);
-                console.log(feedback);
-                return feedback;
+                const feedbacks = res.json().obj;
+                let transformedFeedback : Feedback[] = [];
+                for(let feedback of feedbacks){
+                    transformedFeedback.push(new Feedback(feedback.nameBox, feedback.productBox, feedback.upsBox, feedback.downsBox));
+                }
+                return transformedFeedback;
             })
             .catch((error: Response) => Observable.throw(new Error(error.toString())));
     }

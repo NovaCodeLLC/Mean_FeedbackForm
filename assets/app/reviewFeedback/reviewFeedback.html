@@ -1,5 +1,5 @@
 <article id="feedbackBlock" *ngIf = "feedback">
-    <div class="card card-inverse card-info mb-3 text-center" id="titlingBlock">
+    <div class="card mb-3 text-center" id="titlingBlock">
         <div class="card-block">
             <blockquote class="card-blockquote">
                 <p>{{feedback.nameBox}}</p>
@@ -11,10 +11,14 @@
             <blockquote class="card-blockquote">
                 <header id="upsMargin">Weekly Project Ups</header>
                 <br>
-                <p>{{feedback.upsBox}}</p>
+                <p contenteditable="true"
+                   id="upsContent"
+                    (ended)="onEditMethod()">
+                        {{feedback.upsBox}}
+                </p>
             </blockquote>
         </div>
-    </div><div class="card card-inverse card-danger text-center" id="weeklyDowns">
+    </div><div class="card card-inverse card-danger text-center" id="weeklyDowns" contenteditable="true">
         <div class="card-block">
             <blockquote class="card-blockquote">
                 <header id="downsMargin">Weekly Project Downs</header>
