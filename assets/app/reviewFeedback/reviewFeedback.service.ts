@@ -8,34 +8,29 @@ import {Http, Response} from '@angular/http';
 import {Feedback} from "../feedbackSubmission/feedback.model";
 
 import 'rxjs/Rx';
+import 'rxjs/add/operator/map'
 import { Observable } from "rxjs";
+import {feedbackService} from "../feedbackSubmission/feedback.service";
 
 @Injectable()
 export class reviewFeedbackService{
-    private feedbacks: Feedback[];
+    private feedback: Feedback;
 
     constructor(private http: Http) {}
 
-    getFeedback() {
+    getFeedback(){
         return this.http.get('http://localhost:3000/feedback')
-            .map((response: Response) => {
-                const feedbacks = response.json().obj;
-                let transformedFeedbacks: Feedback[] = [];
-                for (let feedback of feedbacks) {
-                    transformedFeedbacks.push(new Feedback( feedback.nameBox,
-                        feedback.productBox,
-                        feedback.upsBox,
-                        feedback.downsBox,
-                        feedback.feedbackID));
-                }
-                this.feedbacks = transformedFeedbacks;
-                return transformedFeedbacks;
+            .map(res => {
+                let data = res.json();
+                let feedback = new Feedback(data.obj[0].nameBox, data.obj[0].productBox, data.obj[0].upsBox, data.obj[0].downsBox);
+                console.log(feedback);
+                return feedback;
             })
-            .catch((error: Response) => Observable.throw(error.json()));
+            .catch((error: Response) => Observable.throw(new Error(error.toString())));
     }
 
     deleteFeedback() {
-        return this.http.delete('http://localhost:3000/feedback')
+        return this.http.delete('http://localhost:3000/reviewFeedback')
             .map((response: Response) => response.json())
             .catch((error: Response) => Observable.throw(error.json()));
     }

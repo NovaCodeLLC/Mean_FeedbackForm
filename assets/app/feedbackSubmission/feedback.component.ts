@@ -38,7 +38,7 @@ export class FeedbackComponent  {
                                         group.get('downsBox').value);
 
         if(confirm("Is the data entered what you want to submit?")){
-            //console.log(feedback);
+
             this.feedbackService.addFeedback(feedback)
                                 .subscribe(
                                     data => console.log(data),

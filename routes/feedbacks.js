@@ -11,13 +11,13 @@ router.get('/', function (req, res, next) {
         .exec(function (err, feedback) {
             if (err) {
                 return res.status(500).json({
-                    title: 'An error occurred',
-                    error: err
+                    title:'An error occurred',
+                    error:err
                 });
             }
             res.status(200).json({
-                message: 'Success',
-                obj: feedback
+                message:'Success',
+                obj:feedback
             });
         });
 });
