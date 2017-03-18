@@ -24,11 +24,24 @@ export class reviewFeedbackService{
                 const feedbacks = res.json().obj;
                 let transformedFeedback : Feedback[] = [];
                 for(let feedback of feedbacks){
-                    transformedFeedback.push(new Feedback(feedback.nameBox, feedback.productBox, feedback.upsBox, feedback.downsBox));
+                    transformedFeedback.push(
+                        new Feedback(   feedback.nameBox,
+                                        feedback.productBox,
+                                        feedback.upsBox,
+                                        feedback.downsBox,
+                                        feedback._id));
                 }
                 return transformedFeedback;
             })
             .catch((error: Response) => Observable.throw(new Error(error.toString())));
+    }
+
+    putFeedback(feedback : Feedback){
+        console.log("putting data");
+    }
+
+    patchFeedback(feedback : Feedback[]){
+        console.log("patching data");
     }
 
     deleteFeedback() {

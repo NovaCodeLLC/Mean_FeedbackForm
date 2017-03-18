@@ -8,6 +8,7 @@ import {reviewFeedbackService} from "./reviewFeedback.service";
 import {Feedback} from "../feedbackSubmission/feedback.model";
 
 import "rxjs/Rx"
+import {dirtyElements} from "./dirtyElements.model";
 
 
 @Component({
@@ -18,27 +19,32 @@ import "rxjs/Rx"
 })
 
 export class reviewFeedbackComponent{
+    //variable declarations
     @Input() feedback : Feedback
 
-    onEditMethod(){
-        console.log(this.feedback);
-    }
-
+    //when user edits a card's value, it assigns it to the local instance's corresponding field
     changeData(newValue : string, propertyName : String){
         switch (propertyName){
-
             case "upsBox":
                 if(newValue != null){
-                this.feedback.upsBox = newValue;
+                    this.feedback.upsBox = newValue;
+                } else {
+                    this.feedback.upsBox = null;
                 }
+                break;
 
             case "downsBox":
                 if(newValue != null){
                     this.feedback.downsBox = newValue;
+                } else {
+                    this.feedback.downsBox = null;
                 }
+                break;
         }
 
-        console.log(this.feedback);
-    }
+        //static class used to track all the dirty elements on the page
+        dirtyElements.numberOfElements++;
+        dirtyElements.feedbacks.push(this.feedback);
 
+    }
 }

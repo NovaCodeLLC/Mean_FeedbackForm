@@ -13,7 +13,7 @@
                 <br>
                 <p contenteditable="true"
                    id="upsContent"
-                   #newText (blur)="changeData(newText.textContent, 'upsBox')">
+                   #newUpsText (blur)="changeData(newUpsText.textContent, 'upsBox')">
                         {{feedback.upsBox}}
                 </p>
             </blockquote>
@@ -24,8 +24,8 @@
                 <header id="downsMargin">Weekly Project Downs</header>
                 <br>
                 <p contenteditable="true"
-                   #newText
-                   (blur)="changeData(newText.textContent, 'downsBox')">
+                   #newDownsText
+                   (blur)="changeData(newDownsText.textContent, 'downsBox')">
                         {{feedback.downsBox}}
                 </p>
             </blockquote>
