@@ -3,10 +3,10 @@
         <div class="card-block">
             <blockquote class="card-blockquote">
                 <p>{{feedback.nameBox}}</p>
-                <footer><cite title="Source Title">{{feedback.productBox}}</cite></footer>
+                <footer><cite title="Source Title" id="citeText">{{feedback.productBox}}</cite></footer>
             </blockquote>
         </div>
-    </div><div class="card card-inverse card-success mb-3 text-center" id="weeklyUps">
+    </div><div class="card mb-3 text-center" id="weeklyUps">
         <div class="card-block">
             <blockquote class="card-blockquote">
                 <header id="upsMargin">Weekly Project Ups</header>
@@ -18,12 +18,12 @@
                 </p>
             </blockquote>
         </div>
-    </div><div class="card card-inverse card-danger text-center" id="weeklyDowns" contenteditable="true">
+    </div><div class="card text-center" id="weeklyDowns">
         <div class="card-block">
             <blockquote class="card-blockquote">
                 <header id="downsMargin">Weekly Project Downs</header>
                 <br>
-                <p>{{feedback.downsBox}}</p>
+                <p contenteditable="true">{{feedback.downsBox}}</p>
             </blockquote>
         </div>
     </div>
