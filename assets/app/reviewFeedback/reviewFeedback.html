@@ -13,7 +13,7 @@
                 <br>
                 <p contenteditable="true"
                    id="upsContent"
-                    (ended)="onEditMethod()">
+                   #newText (blur)="changeData(newText.textContent, 'upsBox')">
                         {{feedback.upsBox}}
                 </p>
             </blockquote>
@@ -23,7 +23,11 @@
             <blockquote class="card-blockquote">
                 <header id="downsMargin">Weekly Project Downs</header>
                 <br>
-                <p contenteditable="true">{{feedback.downsBox}}</p>
+                <p contenteditable="true"
+                   #newText
+                   (blur)="changeData(newText.textContent, 'downsBox')">
+                        {{feedback.downsBox}}
+                </p>
             </blockquote>
         </div>
     </div>
