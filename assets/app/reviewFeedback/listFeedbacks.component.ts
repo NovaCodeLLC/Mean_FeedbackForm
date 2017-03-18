@@ -38,9 +38,9 @@ export class listReviewFeedbackComponent implements OnInit{
 
     //pushes all items in the dirtyElements array to the database
     pushDataToDatabase(){
-        if(dirtyElements.numberOfElements > 1){
+        if(dirtyElements.feedbacks.length > 1){
            this.reviewFeedbackService.patchFeedback(dirtyElements.feedbacks);
-        }else if(dirtyElements.numberOfElements > 0 && dirtyElements.numberOfElements<2){
+        }else if(dirtyElements.feedbacks.length > 0 && dirtyElements.feedbacks.length<2){
             this.reviewFeedbackService.putFeedback(dirtyElements.feedbacks[0]);
         }
     }

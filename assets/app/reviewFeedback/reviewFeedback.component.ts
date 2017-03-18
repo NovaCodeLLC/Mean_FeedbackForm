@@ -43,7 +43,6 @@ export class reviewFeedbackComponent{
         }
 
         //static class used to track all the dirty elements on the page
-        dirtyElements.numberOfElements++;
         dirtyElements.feedbacks.push(this.feedback);
 
     }
