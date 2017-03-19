@@ -5,5 +5,5 @@
 import {Feedback} from "../feedbackSubmission/feedback.model";
 
 export class dirtyElements{
-    static feedbacks : Feedback[];
+    static feedbacks : Feedback[] = [];
 }

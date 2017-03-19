@@ -50,20 +50,11 @@ export class reviewFeedbackService{
     }
 
     patchFeedback(feedback : Feedback[]){
-        let idString : string;
-
-        idString = "?"
 
         const body = JSON.stringify(feedback);
         const headers = new Headers({'Content-Type' : 'application/json'});
-
-        feedback.forEach(function(element){
-            idString=idString + element.feedbackID + "&";
-        });
-
-        idString = idString.slice(0, -1);
-
-        return this.http.patch("http://localhost:3000/feedback/" + idString, body, {headers: headers})
+        console.log(body);
+        return this.http.patch("http://localhost:3000/feedback", body, {headers: headers})
                         .map((res:Response) =>res.json())
                         .catch((error : Response) => Observable.throw(error.json()));
     }

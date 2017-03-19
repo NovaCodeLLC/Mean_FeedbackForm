@@ -12,7 +12,8 @@ import {dirtyElements} from "./dirtyElements.model";
 
 @Component({
     selector: 'listFeedback',
-    template: `<singleFeedback 
+    template: `<button type="button" id="pushUpdates" (click)="pushDataToDatabase()">Update Forms with Changes</button>
+                    <singleFeedback 
                     [feedback]="feedback" 
                     *ngFor="let feedback of feedbacks"></singleFeedback>
                 `,
@@ -38,10 +39,16 @@ export class listReviewFeedbackComponent implements OnInit{
 
     //pushes all items in the dirtyElements array to the database
     pushDataToDatabase(){
-        if(dirtyElements.feedbacks.length > 1){
-           this.reviewFeedbackService.patchFeedback(dirtyElements.feedbacks);
-        }else if(dirtyElements.feedbacks.length > 0 && dirtyElements.feedbacks.length<2){
-            this.reviewFeedbackService.putFeedback(dirtyElements.feedbacks[0]);
+        if(dirtyElements.feedbacks.length >= 1){
+            console.log("Initiating service request");
+           this.reviewFeedbackService.patchFeedback(dirtyElements.feedbacks)
+               .subscribe(
+                   data => console.log(data),
+                   error => console.log(error)
+               );
         }
+        // else if(dirtyElements.feedbacks.length > 0 && dirtyElements.feedbacks.length<2){
+        //     this.reviewFeedbackService.putFeedback(dirtyElements.feedbacks[0]);
+        // }
     }
 }

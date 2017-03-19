@@ -27,6 +27,8 @@ export class reviewFeedbackComponent{
         switch (propertyName){
             case "upsBox":
                 if(newValue != null){
+                    newValue = newValue.replace(/(\r\n|\n|\r)/gm," ");
+                    newValue = newValue.trim();
                     this.feedback.upsBox = newValue;
                 } else {
                     this.feedback.upsBox = null;
@@ -35,6 +37,8 @@ export class reviewFeedbackComponent{
 
             case "downsBox":
                 if(newValue != null){
+                    newValue = newValue.replace(/(\r\n|\n|\r)/gm," ");
+                    newValue = newValue.trim();
                     this.feedback.downsBox = newValue;
                 } else {
                     this.feedback.downsBox = null;
@@ -44,6 +48,5 @@ export class reviewFeedbackComponent{
 
         //static class used to track all the dirty elements on the page
         dirtyElements.feedbacks.push(this.feedback);
-
     }
 }
