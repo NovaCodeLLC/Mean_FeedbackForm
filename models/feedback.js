@@ -13,7 +13,6 @@ var schema = new Schema({
     productBox: {type: String, required: true},
     upsBox:{type: String, required: true},
     downsBox: {type: String, required: true},
-    feedbackID:{type: String}
 });
 
 

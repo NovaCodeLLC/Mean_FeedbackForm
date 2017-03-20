@@ -3,6 +3,7 @@
  */
 var express = require('express');
 var router = express.Router();
+var mongoose = require('mongoose');
 
 var Feedback = require('../models/feedback');
 
@@ -44,50 +45,75 @@ router.post('/', function (req, res, next) {
 });
 
 router.patch('/', function (req, res, next) {
+    //create an array from the objects in the body
     var data = req.body;
-    var i = 0;
-        data.forEach(function (feedbackIn) {
-        var feedBack = new Feedback({
+    console.log(req.body);
+    //this array holds all the database response objects
+    var responseArray = [];
+
+        //iterate over each item in the array
+        var iteration = [];
+
+            iteration.push(data.every(function (feedbackIn) {
+
+            //take current object and transform to feedback object
+            var feedBack = new Feedback({
             nameBox: feedbackIn.nameBox,
             productBox: feedbackIn.productBox,
             upsBox: feedbackIn.upsBox,
-            downsBox: feedbackIn.downsBox,
-            feedbackID: feedbackIn.feedbackID
+            downsBox: feedbackIn.downsBox
         });
 
-        var query = {"feedbackID": "'" + feedBack.feedbackID + "'"};
-        var update = {"upsBox": feedBack.upsBox, "downsBox":feedBack.downsBox};
-        var options = {new:true};
+        //grab the current object's id
+        var idString = feedbackIn.feedbackID;
+        var objectID = new mongoose.mongo.ObjectId(idString);
+        var query = {_id: objectID};
 
-        Feedback.findOneAndUpdate(query, update, options, function (err, feedbackRec) {
-            console.log("inside find and update");
+        //find the ID and attempt to store to DB
+        var results = Feedback.findOneAndUpdate(query,
+                                                {$set:{upsBox: feedBack.upsBox,
+                                                        downsBox: feedBack.downsBox}},
+                                                function (err, dbRes) {
+            console.log("in findby");
             if (err) {
-                return res.status(500).json({
+                responseArray.push(JSON.stringify({
                     title: 'An error occurred',
                     error: err
-                });
+                }));
+                console.log(responseArray);
+                return false;
             }
-            if (!feedbackRec) {
-                return res.status(500).json({
+            if (!dbRes) {
+                responseArray.push(JSON.stringify({
                     title: 'No Feedback Record Found!',
                     error: {feedback: 'Feedback Record not found'}
-                });
+                }));
+                console.log(responseArray);
+                return false;
             }
-            feedBack.save(function (err, result) {
-                console.log("in Save! pass: " + i);
-                if (err) {
-                    return res.status(500).json({
-                        title: 'An error occurred',
-                        error: err
-                    });
-                }
-                res.status(200).json({
+                console.log("in Save! pass");
+                responseArray.push({
                     message: 'Updated message',
-                    obj: result
+                    obj: dbRes
                 });
+                console.log("holding array content: " + responseArray);
+                return true;
             });
-        });
-    });
+        return results;
+    }));
+        if(iteration.includes(false)){
+            console.log("in iteration failure");
+            res.status(500).json({
+                message: 'update failed',
+                obj: JSON.stringify(responseArray)
+            });
+        } else if(iteration.includes(true)) {
+            console.log("interation success");
+            res.status(200).json({
+                message: "Update Success!",
+                obj: JSON.stringify(responseArray)
+            });
+        }
 });
 
 router.delete('/', function(req, res, next) {
