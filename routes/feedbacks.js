@@ -46,76 +46,112 @@ router.post('/', function (req, res, next) {
     });
 });
 
+
+//this will be needed as a composite object within patch
+function CompositeFeeder(query, Feedback){
+    this.feedback = Feedback;
+    this.query = query;
+}
+
 router.patch('/', function (req, res, next) {
     //create an array from the objects in the body
-    var data = req.body;
-    console.log(req.body);
 
-    var compositeFeeder = new Object({
-        feedbackField: Feedback,
-        query: {}
-    });
 
-    var updater = Rx.Observable.from(data)
-                 .map(function(currentElement){
-                            returnItem = new compositeFeeder({
-                                feedbackField: new Feedback({
-                                    nameBox: currentElement.nameBox,
-                                    productBox: currentElement.productBox,
-                                    upsBox: currentElement.upsBox,
-                                    downsBox: currentElement.downsBox
-                                }),
-                                query: {_id: new mongoose.mongo.ObjectId(feedbackIn.feedbackID)}
-                            })
-                     console.log("return item: " +returnItem);
-                    })
-        .flatMap(function(currentElement){
-                Fetcher(currentElement.query, {$set:{upsBox: currentElement.feedbackField.upsBox,
-                                                 downsBox: currentElement.feedbackField.downsBox}})
-                        .map(function(res){res.json({title: "response of DB", body: res})})
-                        .subscribe(
-                            function(next){console.log(next)},
-                            function(err){err.json({title:"error occurred", error:err})},
-                            function(complete){console.log("update completed for: " + complete.json())}
-                        );
+
+    var testData = Rx.Observable.from(req.body).map(function (currentElement) {
+        returnItem = new CompositeFeeder(
+                {_id: new mongoose.mongo.ObjectId(currentElement.feedbackID)},
+                new Feedback({
+                nameBox: currentElement.nameBox,
+                productBox: currentElement.productBox,
+                upsBox: currentElement.upsBox,
+                downsBox: currentElement.downsBox
+            }));
+        return returnItem;
+        })
+        .fromCallback(function(item) {
+            var val = Feedback.findByIdAndUpdate(item.query,
+                {$set:{upsBox: item.feedback.upsBox, downsBox: item.feedback.downsBox}},
+                function (err, res) {
+                console.log("response from Db: " + res);
+                    if (err) {
+                        return res;
+                    }
+                    if (!res) {
+                        return res;
+                    }
+                    if(res) {
+                        return res;
+                    }
+                }
+            );
+            console.log("Value is: val" + val);
         });
 
-        updater.subscribe(
-            function(next){console.log(next);},
-            function(err) {
-                return res.status(500).json({
-                    title: "an error occured",
-                    error: err
-                });},
-            function (res) {
-                return res.status(200).json({
-                    title: "Successful update",
-                    body: res
-                })
-            });
+    testData.subscribe(function (item) {
+        console.log(item + " \n \n subscriber")
+    });
 });
+//     var updater = Rx.Observable.from(data)
+//                  .map(function(currentElement){
+//                             returnItem = new compositeFeeder({
+//                                 feedbackField: new Feedback({
+//                                     nameBox: currentElement.nameBox,
+//                                     productBox: currentElement.productBox,
+//                                     upsBox: currentElement.upsBox,
+//                                     downsBox: currentElement.downsBox
+//                                 }),
+//                                 query: {_id: new mongoose.mongo.ObjectId(currentElement.feedbackID)}
+//                             })
+//                      console.log("return item: " +returnItem);
+//                     })
+//         .flatMap(function(currentElement){
+//                 Fetcher(currentElement.query, {$set:{upsBox: currentElement.feedbackField.upsBox,
+//                                                  downsBox: currentElement.feedbackField.downsBox}})
+//                         .ap(function(res){res.json({title: "response of DB", body: res})})
+//                         .subscribe(
+//                             function(next){console.log(next)},
+//                             function(err){err.json({title:"error occurred", error:err})},
+//                             function(complete){console.log("update completed for: " + complete.json())}
+//                         );
+//         });
+//
+//         updater.subscribe(
+//             function(next){console.log(next);},
+//             function(err) {
+//                 return res.status(500).json({
+//                     title: "an error occured",
+//                     error: err
+//                 });},
+//             function (res) {
+//                 return res.status(200).json({
+//                     title: "Successful update",
+//                     body: res
+//                 })
+//             });
+// });
+//
+// function Fetcher(query, update){
+//     return Rx.Observable.from(Feedback.findOneAndUpdate(query, update,
+//         function (res, err){
+//             if (err) {
+//                 return err.json({
+//                     title: 'An error occurred',
+//                     error: err
+//                 });
+//             }
+//             if (!res) {
+//                 return res.json({
+//                     title: 'No Message Found!',
+//                     error: {message: 'Message not found'}
+//                 });
+//             }
+//                 return res.json({
+//                     message: 'Updated message',
+//                     obj: res
+//                 });
+//         }));
 
-function Fetcher(query, update){
-    return Rx.Observable.from(Feedback.findOneAndUpdate(query, update,
-        function (res, err){
-            if (err) {
-                return err.json({
-                    title: 'An error occurred',
-                    error: err
-                });
-            }
-            if (!res) {
-                return res.json({
-                    title: 'No Message Found!',
-                    error: {message: 'Message not found'}
-                });
-            }
-                return res.json({
-                    message: 'Updated message',
-                    obj: res
-                });
-        }));
-}
 
     //     //iterate over each item in the array
     //     var iteration = [];
