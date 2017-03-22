@@ -17,6 +17,16 @@ import {dirtyElements} from "./dirtyElements.model";
                     [feedback]="feedback" 
                     *ngFor="let feedback of feedbacks"></singleFeedback>
                 `,
+    styles: [`#pushUpdates{
+                color: aliceblue;
+                background-color: dodgerblue;
+                border: 2px solid;
+                border-radius: 25px;
+                padding: 15px 25px;
+                position: relative;
+                left: 1%;
+                margin-top: 10px;}
+            `],
     providers: [reviewFeedbackService]
 })
 

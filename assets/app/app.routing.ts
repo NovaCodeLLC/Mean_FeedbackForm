@@ -8,10 +8,10 @@ import {reviewFeedbackComponent} from "./reviewFeedback/reviewFeedback.component
 import {listReviewFeedbackComponent} from "./reviewFeedback/listFeedbacks.component";
 
 const APP_ROUTES: Routes = [
-    { path: '', redirectTo: '/messages', pathMatch: 'full' },
+    { path: '', redirectTo: 'auth', pathMatch: 'full' },
     { path: 'auth', component: AuthenticationComponent, children: AUTH_ROUTES },
     { path: 'feedback', component: FeedbackComponent},
-    { path: 'messages', component: MessagesComponent },
+    //{ path: 'messages', component: MessagesComponent },
     { path: 'reviewFeedback', component: listReviewFeedbackComponent}
 ];
 
