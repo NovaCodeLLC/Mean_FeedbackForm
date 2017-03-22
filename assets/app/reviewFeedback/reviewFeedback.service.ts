@@ -59,9 +59,9 @@ export class reviewFeedbackService{
                         .catch((error : Response) => Observable.throw(error.json()));
     }
 
-    deleteFeedback() {
-         return this.http.delete('http://localhost:3000/reviewFeedback')
+    deleteFeedback(feedback : Feedback) {
+         return this.http.delete('http://localhost:3000/feedback/' + feedback.feedbackID)
                     .map((response: Response) => response.json())
-                    .catch((error: Response) => Observable.throw(error.json()));
+                    .catch((error: Response) => Observable.throw(new Error(error.toString())));
     }
 }

@@ -60,5 +60,7 @@ export class listReviewFeedbackComponent implements OnInit{
         // else if(dirtyElements.feedbacks.length > 0 && dirtyElements.feedbacks.length<2){
         //     this.reviewFeedbackService.putFeedback(dirtyElements.feedbacks[0]);
         // }
+        dirtyElements.feedbacks = [];
+
     }
 }

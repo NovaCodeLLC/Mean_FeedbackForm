@@ -2,7 +2,7 @@
  * Created by TXL8009 on 3/16/2017.
  */
 
-import {Component, Input} from "@angular/core";
+import {Component, Input, OnInit} from "@angular/core";
 
 import {reviewFeedbackService} from "./reviewFeedback.service";
 import {Feedback} from "../feedbackSubmission/feedback.model";
@@ -21,6 +21,8 @@ import {dirtyElements} from "./dirtyElements.model";
 export class reviewFeedbackComponent{
     //variable declarations
     @Input() feedback : Feedback
+
+    constructor(private reviewFeedbackServices : reviewFeedbackService){}
 
     //when user edits a card's value, it assigns it to the local instance's corresponding field
     changeData(newValue : string, propertyName : String){
@@ -48,5 +50,14 @@ export class reviewFeedbackComponent{
 
         //static class used to track all the dirty elements on the page
         dirtyElements.feedbacks.push(this.feedback);
+    }
+
+    onDelete(){
+        console.log("in Delete service");
+        this.reviewFeedbackServices.deleteFeedback(this.feedback)
+            .subscribe(
+                data => console.log(data),
+                error => console.log(error)
+            );
     }
 }

@@ -91,7 +91,6 @@ router.patch('/', function (req, res, next) {
              }
              }*/
         );
-        console.log("Value is: val" + val);
         promisearray.push(val.exec());
 
     }); //end of forEachloop
@@ -101,7 +100,11 @@ router.patch('/', function (req, res, next) {
 
     promisearray.forEach(function (item) {
         item.then(function (resolution) {
-                responsearray.push(resolution)
+                console.log(resolution);
+                return res.status(statuscode).json({
+                    title: 'Db Update Response',
+                    body: JSON.stringify(responsearray)
+                });
             },
             function (error) {
 
@@ -112,28 +115,24 @@ router.patch('/', function (req, res, next) {
             })
     });
 
-    return res.status(statuscode).json({
-        title: 'Db Update Response',
-        error: responsearray
-    });
 });
 
-router.delete('/', function(req, res, next) {
-    Feedback.find()
-        .exec(function (err, message) {
+router.delete('/:id', function(req, res, next) {
+    console.log(req.param.id);
+    Feedback.findById(req.params.id, function (err, feedback) {
         if (err) {
             return res.status(500).json({
                 title: 'An error occurred',
                 error: err
             });
         }
-        if (!message) {
+        if (!feedback) {
             return res.status(500).json({
                 title: 'No Message Found!',
                 error: {message: 'Message not found'}
             });
         }
-        message.remove(function(err, result) {
+        feedback.remove(function(err, result) {
             if (err) {
                 return res.status(500).json({
                     title: 'An error occurred',
