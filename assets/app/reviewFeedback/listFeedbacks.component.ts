@@ -1,14 +1,15 @@
 /**
  * Created by TXL8009 on 3/17/2017.
  */
-import { Component, OnInit } from "@angular/core";
+import {Component, OnInit, ViewContainerRef} from "@angular/core";
+
+import {dirtyElements} from "./dirtyElements.model";
+import {Feedback} from "../feedbackSubmission/feedback.model";
+import { Modal } from 'angular2-modal/plugins/bootstrap';
+import {Overlay} from "angular2-modal";
 
 import {reviewFeedbackService} from "./reviewFeedback.service";
-import {Feedback} from "../feedbackSubmission/feedback.model";
-
 import "rxjs/Rx"
-import {dirtyElements} from "./dirtyElements.model";
-
 
 @Component({
     selector: 'listFeedback',
@@ -38,10 +39,15 @@ import {dirtyElements} from "./dirtyElements.model";
 
 export class listReviewFeedbackComponent implements OnInit{
     //variable declaration
-    feedbacks : Feedback[];
+    private feedbacks : Feedback[];
 
     //initialize our service
-    constructor(private reviewFeedbackService : reviewFeedbackService){}
+    constructor(private reviewFeedbackService : reviewFeedbackService,
+                overlay: Overlay,
+                vcRef: ViewContainerRef,
+                private modal: Modal) {
+                                        overlay.defaultViewContainer = vcRef;
+                                        }
 
     //initialize the data
     ngOnInit(){
@@ -59,7 +65,15 @@ export class listReviewFeedbackComponent implements OnInit{
             console.log("Initiating service request");
            this.reviewFeedbackService.patchFeedback(dirtyElements.feedbacks)
                .subscribe(
-                   data => console.log(data),
+                   data => {
+                       console.log(data);
+                       this.modal.alert()
+                           .size('sm')
+                           .showClose(true)
+                           .title('Complete')
+                           .body('Your Update Has Been Processed')
+                           .open();
+                   },
                    error => console.log(error)
                );
         }
@@ -71,6 +85,21 @@ export class listReviewFeedbackComponent implements OnInit{
     }
 
     feedbacksChanged(event){
+        this.modal.alert()
+            .size('lg')
+            .showClose(true)
+            .title('Complete')
+            .body('You have deleted the following feedback item:' + `<br><br>` +
+                'ID: ' + this.feedbacks[this.feedbacks.indexOf(event)].feedbackID +
+                `<br>` +
+                'Name: ' + this.feedbacks[this.feedbacks.indexOf(event)].nameBox +
+                `<br>`+
+                'Product Line: ' + this.feedbacks[this.feedbacks.indexOf(event)].productBox +
+                `<br>` +
+                'Ups: ' + this.feedbacks[this.feedbacks.indexOf(event)].upsBox +
+                `<br>` +
+                'Downs: ' + this.feedbacks[this.feedbacks.indexOf(event)].downsBox)
+            .open();
         this.feedbacks.splice(this.feedbacks.indexOf(event),1);
     }
 }

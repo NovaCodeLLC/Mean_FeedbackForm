@@ -22,6 +22,8 @@ import { SignupComponent } from "./auth/signup.component";
 import { SigninComponent } from "./auth/signin.component";
 import {reviewFeedbackComponent} from "./reviewFeedback/reviewFeedback.component";
 import {listReviewFeedbackComponent} from "./reviewFeedback/listFeedbacks.component";
+import {ModalModule} from "angular2-modal";
+import {BootstrapModalModule} from "angular2-modal/plugins/bootstrap";
 
 @NgModule({
     declarations: [
@@ -37,14 +39,16 @@ import {listReviewFeedbackComponent} from "./reviewFeedback/listFeedbacks.compon
         SignupComponent,
         SigninComponent,
         reviewFeedbackComponent,
-        listReviewFeedbackComponent
+        listReviewFeedbackComponent,
     ],
     imports: [
         BrowserModule,
         FormsModule,
         HttpModule,
         ReactiveFormsModule,
-        routing
+        routing,
+        ModalModule.forRoot(),
+        BootstrapModalModule
     ],
     bootstrap: [AppComponent]
 })

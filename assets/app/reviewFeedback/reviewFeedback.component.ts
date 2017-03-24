@@ -2,13 +2,14 @@
  * Created by TXL8009 on 3/16/2017.
  */
 
-import {Component, Input, Output, EventEmitter} from "@angular/core";
+import {Component, Input, Output, EventEmitter, ViewContainerRef} from "@angular/core";
 import {dirtyElements} from "./dirtyElements.model";
 
 import {Feedback} from "../feedbackSubmission/feedback.model";
 
 import {reviewFeedbackService} from "./reviewFeedback.service";
 import "rxjs/Rx"
+
 
 
 @Component({
@@ -23,6 +24,7 @@ export class reviewFeedbackComponent{
     @Input() feedback : Feedback
     @Output()
     change: EventEmitter<Feedback> = new EventEmitter<Feedback>();
+
 
     constructor(private reviewFeedbackServices : reviewFeedbackService){}
 
