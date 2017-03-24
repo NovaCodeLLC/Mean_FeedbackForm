@@ -53,7 +53,6 @@ export class reviewFeedbackService{
 
         const body = JSON.stringify(feedback);
         const headers = new Headers({'Content-Type' : 'application/json'});
-        console.log(body);
         return this.http.patch("http://localhost:3000/feedback", body, {headers: headers})
                         .map((res:Response) =>res.json())
                         .catch((error : Response) => Observable.throw(error.json()));

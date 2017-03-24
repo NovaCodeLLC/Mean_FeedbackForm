@@ -14,7 +14,8 @@ import {dirtyElements} from "./dirtyElements.model";
     selector: 'listFeedback',
     template: `<button type="button" id="pushUpdates" (click)="pushDataToDatabase()">Update Forms with Changes</button>
                     <singleFeedback 
-                    [feedback]="feedback" 
+                    [feedback]="feedback"
+                     (change)="feedbacksChanged($event)"
                     *ngFor="let feedback of feedbacks"></singleFeedback>
                 `,
     styles: [`#pushUpdates{
@@ -26,6 +27,11 @@ import {dirtyElements} from "./dirtyElements.model";
                 position: relative;
                 left: 1%;
                 margin-top: 10px;}
+                
+                #pushUpdates:hover{
+                    color: dodgerblue;
+                    background-color: aliceblue;
+                }
             `],
     providers: [reviewFeedbackService]
 })
@@ -62,5 +68,9 @@ export class listReviewFeedbackComponent implements OnInit{
         // }
         dirtyElements.feedbacks = [];
 
+    }
+
+    feedbacksChanged(event){
+        this.feedbacks.splice(this.feedbacks.indexOf(event),1);
     }
 }

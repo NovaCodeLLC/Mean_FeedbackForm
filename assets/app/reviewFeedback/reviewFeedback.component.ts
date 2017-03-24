@@ -2,13 +2,13 @@
  * Created by TXL8009 on 3/16/2017.
  */
 
-import {Component, Input, OnInit} from "@angular/core";
+import {Component, Input, Output, EventEmitter} from "@angular/core";
+import {dirtyElements} from "./dirtyElements.model";
 
-import {reviewFeedbackService} from "./reviewFeedback.service";
 import {Feedback} from "../feedbackSubmission/feedback.model";
 
+import {reviewFeedbackService} from "./reviewFeedback.service";
 import "rxjs/Rx"
-import {dirtyElements} from "./dirtyElements.model";
 
 
 @Component({
@@ -21,6 +21,8 @@ import {dirtyElements} from "./dirtyElements.model";
 export class reviewFeedbackComponent{
     //variable declarations
     @Input() feedback : Feedback
+    @Output()
+    change: EventEmitter<Feedback> = new EventEmitter<Feedback>();
 
     constructor(private reviewFeedbackServices : reviewFeedbackService){}
 
@@ -56,8 +58,12 @@ export class reviewFeedbackComponent{
         console.log("in Delete service");
         this.reviewFeedbackServices.deleteFeedback(this.feedback)
             .subscribe(
-                data => console.log(data),
-                error => console.log(error)
+                data => {
+                    console.log(data);
+                    this.change.emit(this.feedback);
+                },
+                        error => console.log(error)
+
             );
     }
 }

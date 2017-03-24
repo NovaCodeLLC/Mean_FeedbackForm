@@ -1,5 +1,6 @@
 <article id="feedbackBlock" *ngIf = "feedback">
     <div class="card mb-3 text-center" id="titlingBlock">
+        <button type="button" id="deleteBtn" (click)="onDelete()">X</button>
         <div class="card-block">
             <blockquote class="card-blockquote">
                 <p>{{feedback.nameBox}}</p>
@@ -21,7 +22,6 @@
                 </blockquote>
             </div>
         </div>
-        <button type="button" id="deleteBtn" (click)="onDelete()">Delete</button>
     </span>
     <div class="card text-center" id="weeklyDowns">
         <div class="card-block">
@@ -36,4 +36,5 @@
             </blockquote>
         </div>
     </div>
+    <hr>
 </article>
