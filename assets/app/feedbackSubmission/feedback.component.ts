@@ -2,11 +2,14 @@
  * Created by TXL8009 on 3/13/2017.
  */
 
-import {Inject, Component} from "@angular/core";
+import {Inject, Component, ViewContainerRef} from "@angular/core";
 import {FormGroup, FormBuilder, Validators} from "@angular/forms";
 
 import {feedbackService} from "./feedback.service";
 import {Feedback} from "./feedback.model";
+
+import { Modal } from 'angular2-modal/plugins/bootstrap';
+import {Overlay} from "angular2-modal";
 
 @Component({
     selector: 'Form-template',
@@ -18,7 +21,10 @@ import {Feedback} from "./feedback.model";
 export class FeedbackComponent  {
     feedbackForm : FormGroup;
 
-    constructor(@Inject(FormBuilder) fb : FormBuilder, private feedbackService: feedbackService){
+    constructor(@Inject(FormBuilder) fb : FormBuilder, private feedbackService: feedbackService,
+                overlay: Overlay,
+                vcRef: ViewContainerRef,
+                private modal: Modal){
         this.feedbackForm = fb.group({
 
             nameBox: ['',Validators.required],
@@ -29,6 +35,7 @@ export class FeedbackComponent  {
 
             downsBox: ['',Validators.required],
         })
+        overlay.defaultViewContainer = vcRef;
     }
 
     submitFeedback(group : FormGroup){
@@ -41,7 +48,16 @@ export class FeedbackComponent  {
 
             this.feedbackService.addFeedback(feedback)
                                 .subscribe(
-                                    data => console.log(data),
+                                    data => {
+                                        console.log(data);
+                                        this.modal.alert()
+                                            .size('sm')
+                                            .showClose(true)
+                                            .title('Submitted!')
+                                            .body('Thank you for submitting your feedback.')
+                                            .open();
+                                        this.feedbackForm.reset();
+                                    },
                                     error => console.log(error)
                                 );
         }
