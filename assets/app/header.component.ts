@@ -1,5 +1,6 @@
 import { Component } from "@angular/core";
-import {AuthService} from "./auth/auth.service";
+import {AuthService} from "./admin/admin.service";
+import {Router} from "@angular/router";
 
 @Component({
     selector: 'app-header',
@@ -13,16 +14,21 @@ import {AuthService} from "./auth/auth.service";
                 </ul>
                 <ul class="nav nav-pills pull-right">
                     <li routerLinkActive="active" *ngIf = '!isLoggedIn()'><a [routerLink]="['/signin']">Login</a></li>
-                    <li routerLinkActive="active" *ngIf ='isLoggedIn()'><a [routerLink]="['/logout']">Logout</a></li>
+                    <li routerLinkActive="active" *ngIf ='isLoggedIn()'><a (click)="onLogOut()">Logout</a></li>
                 </ul>
             </nav>
         </header>
     `
 })
 export class HeaderComponent {
-    constructor(private authService:AuthService){}
+    constructor(private authService:AuthService, private router : Router){}
 
     isLoggedIn(){
         return this.authService.isLoggedIn();
+    }
+
+    onLogOut(){
+            this.authService.logout();
+            this.router.navigateByUrl('signin');
     }
 }

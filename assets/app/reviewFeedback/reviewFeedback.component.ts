@@ -21,7 +21,7 @@ import "rxjs/Rx"
 
 export class reviewFeedbackComponent{
     //variable declarations
-    @Input() feedback : Feedback
+    @Input() feedback : Feedback;
     @Output()
     change: EventEmitter<Feedback> = new EventEmitter<Feedback>();
 
@@ -56,6 +56,7 @@ export class reviewFeedbackComponent{
         dirtyElements.feedbacks.push(this.feedback);
     }
 
+    //calls the delete service.  When a response is send an event emitter transmitting the deleted item's data.
     onDelete(){
         console.log("in Delete service");
         this.reviewFeedbackServices.deleteFeedback(this.feedback)
