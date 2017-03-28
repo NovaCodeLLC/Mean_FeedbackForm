@@ -10,6 +10,8 @@ import {BootstrapModalModule} from "angular2-modal/plugins/bootstrap";
 
 import { FeedbackComponent} from "./feedbackSubmission/feedback.component";
 
+import { GoalComponent } from "./admin/feedbackgoals.component";
+
 import { HeaderComponent } from "./header.component";
 
 import { listReviewFeedbackComponent } from "./reviewFeedback/listFeedbacks.component";
@@ -32,6 +34,7 @@ import { SigninComponent } from "./admin/signin.component";
         AddUserComponent,
         AuthenticationComponent,
         FeedbackComponent,
+        GoalComponent,
         HeaderComponent,
         MessageComponent,
         MessageListComponent,

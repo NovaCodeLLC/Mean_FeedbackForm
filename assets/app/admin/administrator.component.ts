@@ -8,9 +8,9 @@ import {AuthService} from "./admin.service";
             <nav class="col-md-8 col-md-offset-2">
                 <ul class="nav nav-tabs">
                     <li routerLinkActive="active"><a [routerLink]="['addUser']">Add User</a></li>
-                    <li routerLinkActive="active"><a [routerLink]="['removeUser']"></a>Remove User</li>
-                    <li routerLinkActive="active"><a [routerLink]="['groups']"></a>Groups</li>
-                    <li routerLinkActive="active"><a [routerLink]="['goals']"></a>Feedback Goals</li>
+                    <li routerLinkActive="active"><a [routerLink]="['removeUser']">Remove User</a></li>
+                    <li routerLinkActive="active"><a [routerLink]="['groups']">Groups</a></li>
+                    <li routerLinkActive="active"><a [routerLink]="['goals']">Feedback Goals</a></li>
                 </ul>
             </nav>
         </header>

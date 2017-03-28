@@ -2,33 +2,37 @@
  * Created by TXL8009 on 3/27/2017.
  */
 
-import {Inject, Component, ViewContainerRef} from "@angular/core";
-import {FormGroup, FormBuilder, Validators} from "@angular/forms";
-import { Modal } from 'angular2-modal/plugins/bootstrap';
-import {Overlay} from "angular2-modal";
+import { Component } from "@angular/core";
+import { FormGroup, FormArray, FormControl } from "@angular/forms";
 
 @Component({
-    selector: 'Form-template',
-    template: ` <span id="goalBlock">
-                    <label for="goalBox" id="goalLabel">Goal</label>
-                    <input type="text"
-                   id="goalBox"
-                   class="form-control"
-                   placeholder="Strategic Goal"
-                   formControlName="goalBox">
-                   <button type="button" id="deleteBtn" (click)="onDelete()">-</button>
-                </span>`,
-    styleUrls: ["./feedbackgoals.css"],
+    selector: 'goalTemplate',
+    template: `<form [formGroup]="goalForm">
+                    <div formArrayName="goals">
+                        <div *ngFor="let goal of goals.controls; let i = index">                        
+                                <input [formControlName]="i" placeholder="Add New Goal">                      
+                        </div>
+                    </div>
+                   <button type="button" (click)="addGoal()">Add Goal</button>
+                </form>`,
 })
 
-export class FeedbackComponent  {
-    feedbackForm : FormGroup;
+export class GoalComponent  {
 
-    constructor(@Inject(FormBuilder) fb : FormBuilder){
-        this.feedbackForm = fb.group({
 
-            goalBox: ['',Validators.required],
-        })
+    goalForm = new FormGroup({
+        goals: new FormArray([
+            new FormControl('InitialGoal')
+        ]),
+    });
+
+    get goals(): FormArray{return this.goalForm.get('goals') as FormArray;}
+
+    addGoal(){
+        this.goals.push(new FormControl());
     }
 
+    onDelete(i : number){
+        this.goals.removeAt(i);
+    }
 }
