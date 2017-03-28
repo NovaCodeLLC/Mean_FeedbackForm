@@ -9,8 +9,11 @@ import { FormGroup, FormArray, FormControl } from "@angular/forms";
     selector: 'goalTemplate',
     template: `<form [formGroup]="goalForm">
                     <div formArrayName="goals">
-                        <div *ngFor="let goal of goals.controls; let i = index">                        
-                                <input [formControlName]="i" placeholder="Add New Goal">                      
+                        <div *ngFor="let goal of goals.controls; let i = index">        
+                            <span>
+                                <input [formControlName]="i" placeholder="Add New Goal">     
+                                <button type="button" (click)="onDelete(i)">-</button>
+                            </span>
                         </div>
                     </div>
                    <button type="button" (click)="addGoal()">Add Goal</button>
