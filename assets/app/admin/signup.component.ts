@@ -16,7 +16,8 @@ export class AddUserComponent implements OnInit {
         const user = new User(  this.myForm.value.email,
                                 this.myForm.value.password,
                                 this.myForm.value.firstName,
-                                this.myForm.value.lastName);
+                                this.myForm.value.lastName,
+                                this.myForm.value.role);
         this.authService.signUp(user)
             .subscribe(data=>console.log(data),
                         error => console.error(error)
@@ -32,7 +33,8 @@ export class AddUserComponent implements OnInit {
                 Validators.required,
                 Validators.pattern("[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")
             ]),
-            password: new FormControl(null, Validators.required)
+            password: new FormControl(null, Validators.required),
+            role: new FormControl(null, Validators.required)
         });
     }
 }

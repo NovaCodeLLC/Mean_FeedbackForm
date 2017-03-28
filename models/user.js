@@ -7,7 +7,8 @@ var schema = new Schema({
     lastName: {type: String, required: true},
     password: {type: String, required: true},
     email: {type: String, required: true, unique: true},
-    feedbacks: [{type: Schema.Types.ObjectId, ref: 'Feedback'}]
+    feedbacks: [{type: Schema.Types.ObjectId, ref: 'Feedback'}],
+    role: {type: String, required: true}
 });
 
 schema.plugin(mongooseUniqueValidator);

@@ -1,0 +1,43 @@
+.form-control{
+    left: 18%;
+    width: 64%;
+    position: relative;
+    float: left;
+    margin: 5px;
+}
+
+.btn-danger{
+    position: relative;
+    right: -18.5%;
+    margin: 5px;
+}
+
+.btn-danger:hover{
+    color: black;
+    background-color: lightpink;
+    background-position: 0 -32px;
+}
+
+.btn-success{
+    position: relative;
+    left:18.25%;
+    margin: .25%;
+}
+
+.btn-success:hover{
+    color: forestgreen;
+    background-color: #b4e391;
+    background-position: 0 -32px;
+}
+
+.btn-primary{
+    position: relative;
+    left: 18%;
+    margin: .25%;
+}
+
+.btn-primary:hover{
+    color: dodgerblue;
+    background-color: aliceblue;
+    background-position: 0 -32px;
+}
