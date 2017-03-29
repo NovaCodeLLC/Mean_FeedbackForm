@@ -3,12 +3,10 @@
  */
 var express = require('express');
 var router = express.Router();
-var bcrypt = require('bcryptjs');
-var jwt = require('jsonwebtoken');
 var User = require('../models/user');
 
 router.get('/droplist/', function (req, res, err) {
-    User.find({role:'director'}, function(err, result){
+    User.find({role:'Director'}, function(err, result){
         if(err){
             return res.status(500).json({
                 title: 'An error ocurred',
@@ -22,10 +20,11 @@ router.get('/droplist/', function (req, res, err) {
                 obj: result
             });
         }//end of null user
-
         return res.status(200).json({
            title: 'Success!',
             obj: result
         });
     }); //end find method
 });
+
+module.exports = router;

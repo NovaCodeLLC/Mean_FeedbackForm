@@ -14,7 +14,7 @@ export class AuthService{
     constructor(private  http: Http){}
 
     getDirectors(){
-        return this.http.get("http://localhost:3000/admin/droplist/")
+        return this.http.get("http://localhost:3000/admin/droplist")
             .map(res=>{
                 //transform from json to string array
                 const directors=res.json().obj;

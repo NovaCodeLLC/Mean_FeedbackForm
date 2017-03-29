@@ -1,3 +1,8 @@
+#inputRowSpan{
+    display: inline-block;
+    align-content: center;
+    width: 100%;
+}
 .form-control{
     left: 18%;
     width: 64%;
@@ -20,6 +25,7 @@
 
 .btn-success{
     position: relative;
+    float: inherit;
     left:18.25%;
     margin: .25%;
 }
@@ -32,6 +38,7 @@
 
 .btn-primary{
     position: relative;
+    float: inherit;
     left: 18%;
     margin: .25%;
 }

@@ -5,32 +5,11 @@
 import {Component, OnInit} from "@angular/core";
 import { FormGroup, FormArray, FormControl } from "@angular/forms";
 import {AuthService} from "./admin.service";
-import {Response} from "@angular/http";
+import {User} from "./user.model";
 
 @Component({
     selector: 'goalTemplate',
-    template: `<form [formGroup]="goalForm" (ngSubmit)="onSubmit(goalForm)">
-                    <select [formControlName]="director">
-                        <option ngForm="let director of directors; let i = index" 
-                                [ngValue]="i"
-                                *ngIf="directorsArr">
-                        {{director}}
-                        </option>
-                    </select>
-                    <div formArrayName="goals">
-                        <div *ngFor="let goal of goals.controls; let i = index">        
-                            <span>
-                                <input class="form-control" [formControlName]="i" placeholder="Add New Goal">     
-                                <button class="btn btn-danger" type="button" (click)="onDelete(i)">-</button>
-                            </span>
-                        </div>
-                    </div>
-                    <br>
-                    <span>
-                        <button class="btn btn-success" type="button" (click)="addGoal()">Add Goal</button>
-                        <button class="btn btn-primary">Save</button>
-                    </span>
-                </form>`,
+    templateUrl: './feedbackgoals.component.html',
     styleUrls: ["./goals.css"],
 })
 
@@ -40,10 +19,10 @@ export class GoalComponent implements OnInit{
         goals: new FormArray([
             new FormControl()
         ]),
-        director: new FormControl()
+        directorCtrl: new FormControl()
     });
 
-    directorsArr : String[];
+    directorsArr : User[];
 
     constructor(private authService:AuthService){}
 
@@ -53,9 +32,9 @@ export class GoalComponent implements OnInit{
 
     ngOnInit(){
         this.authService.getDirectors()
-            .subscribe((data : String[])=>{
-                console.log(data);
+            .subscribe((data : User[])=>{
                 this.directorsArr = data;
+                console.log(this.directorsArr);
             })
     }
 
