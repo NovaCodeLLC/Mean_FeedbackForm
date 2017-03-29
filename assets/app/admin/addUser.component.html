@@ -25,7 +25,14 @@
                     formControlName="email">
         </div>
         <div class="form-group">
-           <select formControlName="role"
+            <label>Role</label>
+            <select formControlName="role" class="form-control" [value]="0">
+                   <option selected disabled [value]="0">Choose A role</option>
+                   <option [value]="1">Admin</option>
+                   <option [value]="2">Director</option>
+                   <option [value]="3">Manager</option>
+                   <option [value]="4">Contributor</option>
+            </select>
         </div>
         <div class="form-group">
             <label for="password">Password</label>

@@ -13,11 +13,30 @@ export class AddUserComponent implements OnInit {
     constructor(private authService: AuthService){}
 
     onSubmit() {
+
+        let accessLevel : string;
+
+        switch(this.myForm.value.role){
+            case('1'):
+                accessLevel = "Admin";
+                break;
+            case('2'):
+                accessLevel = "Director";
+                break;
+            case('3'):
+                accessLevel = "Manager";
+                break;
+            case('4'):
+                accessLevel = "Contributor";
+                break;
+        }
+
         const user = new User(  this.myForm.value.email,
                                 this.myForm.value.password,
                                 this.myForm.value.firstName,
                                 this.myForm.value.lastName,
-                                this.myForm.value.role);
+                                accessLevel);
+
         this.authService.signUp(user)
             .subscribe(data=>console.log(data),
                         error => console.error(error)
