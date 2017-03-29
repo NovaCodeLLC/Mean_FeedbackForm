@@ -4,10 +4,19 @@
 
 import {Component, OnInit} from "@angular/core";
 import { FormGroup, FormArray, FormControl } from "@angular/forms";
+import {AuthService} from "./admin.service";
+import {Response} from "@angular/http";
 
 @Component({
     selector: 'goalTemplate',
     template: `<form [formGroup]="goalForm" (ngSubmit)="onSubmit(goalForm)">
+                    <select [formControlName]="director">
+                        <option ngForm="let director of directors; let i = index" 
+                                [ngValue]="i"
+                                *ngIf="directorsArr">
+                        {{director}}
+                        </option>
+                    </select>
                     <div formArrayName="goals">
                         <div *ngFor="let goal of goals.controls; let i = index">        
                             <span>
@@ -31,14 +40,23 @@ export class GoalComponent implements OnInit{
         goals: new FormArray([
             new FormControl()
         ]),
+        director: new FormControl()
     });
+
+    directorsArr : String[];
+
+    constructor(private authService:AuthService){}
 
     //used to get information from our dynamic goal list and make use of calls in other methods
     get goals(): FormArray{return this.goalForm.get('goals') as FormArray;}
 
 
     ngOnInit(){
-        //todo: implement get call to the database to grab all the directors / goals for later use
+        this.authService.getDirectors()
+            .subscribe((data : String[])=>{
+                console.log(data);
+                this.directorsArr = data;
+            })
     }
 
     addGoal(){

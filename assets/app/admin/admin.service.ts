@@ -3,6 +3,7 @@ import {Injectable} from "@angular/core";
 import {Http, Headers, Response} from "@angular/http";
 import 'rxjs/Rx'
 import {Observable} from "rxjs";
+import {Goals} from "./goals.model";
 /**
  * Created by Thomas Lesperance on 3/25/2017.
  */
@@ -11,6 +12,21 @@ import {Observable} from "rxjs";
 export class AuthService{
 
     constructor(private  http: Http){}
+
+    getDirectors(){
+        return this.http.get("http://localhost:3000/admin/droplist/")
+            .map(res=>{
+                //transform from json to string array
+                const directors=res.json().obj;
+                let transformStrings : String[] =[];
+
+                for(let director of directors){
+                    transformStrings.push(director);
+                }
+                return transformStrings;
+            })
+            .catch((error:Response)=>Observable.throw(error.json()));
+    }
 
     signUp(user:User){
         const body = JSON.stringify((user));
