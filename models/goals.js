@@ -15,4 +15,4 @@ var schema = new Schema({
 
 schema.plugin(mongooseUniqueValidator);
 
-module.exports = mongoose.model('DirectorGoals', schema);
+module.exports = mongoose.model('Goals', schema);

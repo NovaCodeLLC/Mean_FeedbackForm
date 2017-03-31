@@ -28,6 +28,14 @@ export class AuthService{
             .catch((error:Response)=>Observable.throw(error.json()));
     }
 
+    putGoals(goal : Goals){
+        const body = JSON.stringify(goal);
+        const headers = new Headers({'Content-Type' : 'application/json'});
+        return this.http.put('http://localhost:3000/admin/goal', body, {headers:headers})
+            .map((res : Response) => res.json())
+            .catch((error : Response) => Observable.throw(error.json()));
+    }
+
     signUp(user:User){
         const body = JSON.stringify((user));
         const headers = new Headers({'Content-Type': 'application/json'});

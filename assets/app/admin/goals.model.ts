@@ -6,6 +6,7 @@ export class Goals{
     constructor(
         public director : String,
         public year : String,
-        public goals : String[]
+        public goals : String[],
+        public id? : String
     ){}
 }
