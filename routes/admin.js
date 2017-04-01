@@ -5,6 +5,7 @@ var express = require('express');
 var router = express.Router();
 var User = require('../models/user');
 var Goal = require('../models/goals');
+var mongoose = require('mongoose');
 
 router.get('/droplist/', function (req, res, next) {
     User.find({role:'Director'}, function(err, result){
@@ -29,6 +30,8 @@ router.get('/droplist/', function (req, res, next) {
 });
 
 router.put('/goal', function(req, res, next){
+
+    console.log(req.body.director);
 
     //create a goal object
     var goal = new Goal({

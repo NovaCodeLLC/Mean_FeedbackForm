@@ -70,7 +70,9 @@ export class GoalComponent implements OnInit{
                     goalForm.get('goals').value,
                     this.goalId);
             } else {
-                goalObj = new Goals(goalForm.get('directorCtrl').value,
+                let directorID = this.directorsArr[goalForm.get('directorCtrl').value]._id;
+                console.log(directorID);
+                goalObj = new Goals(directorID,
                     goalForm.get('selGoalYr').value,
                     goalForm.get('goals').value)
             }
