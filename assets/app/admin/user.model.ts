@@ -6,5 +6,5 @@ export class User {
                 public lastName: string,
                 public role: string,
                 public feedback?: Feedback[],
-                public id? : string) {}
+                public _id? : string) {}
 }

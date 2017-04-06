@@ -44,7 +44,7 @@ router.put('/goal', function(req, res, next){
 
     //check to decide if we need an ID object
     if(req.body.goalId != null || req.body.goalId != undefined){
-        var  goalId = {_id: new mongoose.mongo.ObjectId(req.body.Id)};
+        var  goalId = {_id: new mongoose.mongo.ObjectId(req.body._id)};
         var update = {$set: {director: goal.director,
                             year: goal.year,
                             goals: goal.goals}};
@@ -101,5 +101,32 @@ router.put('/goal', function(req, res, next){
 
     }//end else
 }); // end of putGoals method
+
+router.get('/goals/:id/:year', function (req, res, next) {
+    console.log("in get route");
+    console.log("id is: " + req.params.id);
+    console.log("year is: " + req.params.year);
+    //query for year AND director ID
+    var query = {director: new mongoose.mongo.ObjectId(req.params.id), year: req.params.year};
+    console.log(query);
+    Goal.findOne(query, function(error,data){
+        if(error){
+            return res.status(500).json({
+              title: 'Error',
+                obj: error
+            });
+        }
+        if(!data){
+            return res.status(500).json({
+                title: 'Record not found',
+                obj: 'No record exists for this user.'
+            });
+        }
+        return res.status(200).json({
+            title: 'Record Found',
+            obj: data
+        });
+    });//end callback / find
+}); //end getGoals
 
 module.exports = router;

@@ -52,6 +52,12 @@ export class AuthService{
             .catch((error: Response)=> Observable.throw(error.json()));
     }
 
+    getGoals(selectedDirector : String, selectedYr : String){
+        return this.http.get('http://localhost:3000/admin/goals/' + selectedDirector + '/' + selectedYr)
+            .map((response : Response) => response.json())
+            .catch((error: Response)=> Observable.throw(error.json()));
+    }
+
     logout(){
         localStorage.clear();
     }

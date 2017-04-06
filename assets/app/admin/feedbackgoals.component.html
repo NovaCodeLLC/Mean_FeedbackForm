@@ -1,17 +1,28 @@
 <form [formGroup]="goalForm" (ngSubmit)="saveGoals(goalForm)">
     <div>
-        <select formControlName="directorCtrl" class="form-control" *ngIf="directorsArr" [value]="0">
+        <select formControlName="directorCtrl"
+                class="form-control"
+                *ngIf="directorsArr"
+                [value]="0"
+                #selDir
+                (change)="setDirector(selDir.value)">
             <option selected disabled [value]="0">Choose a Director</option>
-            <option *ngFor="let director of directorsArr; let i = index" [value]="i">
+            <option *ngFor="let director of directorsArr; let i = index"
+                    [value]="i">
                 {{director.firstName}} {{director.lastName}}
             </option>
         </select>
     </div>
     <br>
     <div>
-        <select formControlName="selGoalYr" class="form-control" *ngIf="goalYrs" [value]="0">
+        <select formControlName="selGoalYr" class="form-control"
+                *ngIf="goalYrs"
+                [value]="0"
+                #selYr
+                (change)="setGoalYr(selYr.value)">
             <option selected disabled [value]="0">Select a Year</option>
-            <option *ngFor="let goalYr of goalYrs; let i = index" [value]="goalYr.toString()">
+            <option *ngFor="let goalYr of goalYrs; let i = index"
+                    [value]="goalYr.toString()">
                 {{goalYr}}
             </option>
         </select>

@@ -7,6 +7,8 @@ import {FormGroup, FormArray, FormControl, Validators} from "@angular/forms";
 import {AuthService} from "./admin.service";
 import {User} from "./user.model";
 import {Goals} from "./goals.model";
+import {isNullOrUndefined} from "util";
+import {Response} from "@angular/http";
 
 @Component({
     selector: 'goalTemplate',
@@ -15,10 +17,13 @@ import {Goals} from "./goals.model";
 })
 
 export class GoalComponent implements OnInit{
-    //variable declarations
+    //variables
     private directorsArr : User[];
     private goalYrs : number [] = [];
     private goalId : String;
+    private goalsArr : Goals;
+    private selectedDirector : String;
+    private selectedYr : String;
 
     //variable that will be used to create dynamic goal list.
     goalForm = new FormGroup({
@@ -48,6 +53,34 @@ export class GoalComponent implements OnInit{
         }
     }
 
+    //setters to prevent undefined problems with html tags
+    setDirector(director : number){
+        console.log(director);
+        this.selectedDirector = this.directorsArr[director]._id;
+        this.onSelection();
+    }
+
+    setGoalYr(year : string){
+        console.log(year);
+        this.selectedYr = year;
+        this.onSelection();
+    }
+
+    onSelection(){
+        console.log("in onSelection director = " + this.selectedDirector +"\n" + "year = " + this.selectedYr);
+        if(!isNullOrUndefined(this.selectedDirector) && !isNullOrUndefined(this.selectedYr)){
+            this.authService.getGoals(this.selectedDirector, this.selectedYr)
+                .subscribe(
+                (data : any)=>{
+                        this.goals.removeAt(0);
+                        data.obj.goals.forEach((item)=> {
+                            this.goals.push(new FormControl(item.toString()));
+                        });
+                        this.goals.push(new FormControl());
+                });
+        }
+    }
+
     //add a new input item to the form
     addGoal(){
         this.goals.push(new FormControl());
@@ -70,9 +103,8 @@ export class GoalComponent implements OnInit{
                     goalForm.get('goals').value,
                     this.goalId);
             } else {
-                let directorID = this.directorsArr[goalForm.get('directorCtrl').value]._id;
-                console.log(directorID);
-                goalObj = new Goals(directorID,
+                console.log(this.selectedDirector);
+                goalObj = new Goals(this.selectedDirector,
                     goalForm.get('selGoalYr').value,
                     goalForm.get('goals').value)
             }
