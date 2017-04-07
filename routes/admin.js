@@ -40,24 +40,17 @@ router.put('/goal', function(req, res, next){
         goals: req.body.goals
     });
 
-    console.log("goal is: " + goal);
-
     //check to decide if we need an ID object
-    if(req.body.goalId != null || req.body.goalId != undefined){
+    if(req.body._id != null || req.body._id != undefined){
         var  goalId = {_id: new mongoose.mongo.ObjectId(req.body._id)};
         var update = {$set: {director: goal.director,
                             year: goal.year,
                             goals: goal.goals}};
-
-        console.log("goal ID is: " + goalId + "\n");
-        cconsole.log("goal update is: " + update);
     }
 
     if(goalId != undefined && goalId != null){
-        console.log("goalID block")
         Goal.findOneAndUpdate(goalId, update, function(error, result){
             if(error){
-                console.log("in error block of findOne");
                 return res.status(500).json({
                     title: 'An error has occurred',
                     error: error
@@ -65,7 +58,6 @@ router.put('/goal', function(req, res, next){
             } //end error block
 
             if(!result){
-                console.log("in result block of findOne");
                 return res.status(500).json({
                     title: 'No user found',
                     obj: {User: null}
@@ -83,29 +75,25 @@ router.put('/goal', function(req, res, next){
         console.log("in no ID block");
         goal.save(function(error, result){
            if(error){
-               console.log("in error block of noID");
                return res.status(500).json({
                    title: 'An Error has Occurred',
                    error: error
                });
-
-               console.log("in 201 block of noID");
-               return res.status(201).json({
-                   title: 'Success! Your goals have been created',
-                   obj: result
-               });
-
            } //end error block
 
+            return res.status(201).json({
+                   title: 'Success! Your goals have been created',
+                   obj: result
+            });
         }); //End save new goal
 
     }//end else
 }); // end of putGoals method
 
 router.get('/goals/:id/:year', function (req, res, next) {
-    console.log("in get route");
-    console.log("id is: " + req.params.id);
-    console.log("year is: " + req.params.year);
+    // console.log("in get route");
+    // console.log("id is: " + req.params.id);
+    // console.log("year is: " + req.params.year);
     //query for year AND director ID
     var query = {director: new mongoose.mongo.ObjectId(req.params.id), year: req.params.year};
     console.log(query);

@@ -77,6 +77,7 @@ export class GoalComponent implements OnInit{
                             this.goals.push(new FormControl(item.toString()));
                         });
                         this.goals.push(new FormControl());
+                        this.goalId = data.obj._id;
                 });
         }
     }
@@ -98,17 +99,17 @@ export class GoalComponent implements OnInit{
 
             //switch up instantiation based on available values
             if(this.goalId !=null){
-               goalObj = new Goals(goalForm.get('directorCtrl').value,
+               goalObj = new Goals(this.selectedDirector,
                     goalForm.get('selGoalYr').value,
                     goalForm.get('goals').value,
                     this.goalId);
             } else {
-                console.log(this.selectedDirector);
                 goalObj = new Goals(this.selectedDirector,
                     goalForm.get('selGoalYr').value,
                     goalForm.get('goals').value)
             }
-
+            console.log("goal object is");
+            console.log(goalObj);
             //call service to save data
             this.authService.putGoals(goalObj)
                 .subscribe( data => console.log(data),

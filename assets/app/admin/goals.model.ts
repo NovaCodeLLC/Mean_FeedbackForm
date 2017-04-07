@@ -7,6 +7,6 @@ export class Goals{
         public director : String,
         public year : String,
         public goals : String[],
-        public id? : String
+        public _id? : String
     ){}
 }
