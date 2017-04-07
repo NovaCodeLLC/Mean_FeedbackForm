@@ -8,7 +8,6 @@ import {AuthService} from "./admin.service";
 import {User} from "./user.model";
 import {Goals} from "./goals.model";
 import {isNullOrUndefined} from "util";
-import {Response} from "@angular/http";
 
 @Component({
     selector: 'goalTemplate',
@@ -68,11 +67,18 @@ export class GoalComponent implements OnInit{
 
     onSelection(){
         console.log("in onSelection director = " + this.selectedDirector +"\n" + "year = " + this.selectedYr);
+
+
         if(!isNullOrUndefined(this.selectedDirector) && !isNullOrUndefined(this.selectedYr)){
+
+            this.goalForm.controls['goals'] = new FormArray([ new FormControl('', Validators.required)]);
+
             this.authService.getGoals(this.selectedDirector, this.selectedYr)
                 .subscribe(
                 (data : any)=>{
+
                         this.goals.removeAt(0);
+
                         data.obj.goals.forEach((item)=> {
                             this.goals.push(new FormControl(item.toString()));
                         });
