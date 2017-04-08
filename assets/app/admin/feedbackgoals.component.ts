@@ -8,7 +8,7 @@ import {AuthService} from "./admin.service";
 import {User} from "./user.model";
 import {Goals} from "./goals.model";
 import {isNullOrUndefined} from "util";
-import {Response} from "@angular/http";
+import {isNull} from "util";
 
 @Component({
     selector: 'goalTemplate',
@@ -69,16 +69,26 @@ export class GoalComponent implements OnInit{
     onSelection(){
         console.log("in onSelection director = " + this.selectedDirector +"\n" + "year = " + this.selectedYr);
         if(!isNullOrUndefined(this.selectedDirector) && !isNullOrUndefined(this.selectedYr)){
+
+            this.goalForm.controls['goals'] = new FormArray([new FormControl()]);
+
             this.authService.getGoals(this.selectedDirector, this.selectedYr)
                 .subscribe(
                 (data : any)=>{
                         this.goals.removeAt(0);
                         data.obj.goals.forEach((item)=> {
-                            this.goals.push(new FormControl(item.toString()));
+                            if(!isNull(item)) {
+                                this.goals.push(new FormControl(item.toString()));
+                            } else {
+                                this.goals.push(new FormControl());
+                            }
                         });
                         this.goals.push(new FormControl());
                         this.goalId = data.obj._id;
-                });
+                },
+                    (error : any) =>{
+                        console.log(error);
+                    });
         }
     }
 
@@ -96,23 +106,42 @@ export class GoalComponent implements OnInit{
     saveGoals(goalForm : FormGroup){
             //local variable
             let goalObj;
+            let goals = goalForm.get('goals').value;
+
+            let filteredGoals = goals.filter((item)=>{
+               return (item != (undefined || '' || null));
+            });
 
             //switch up instantiation based on available values
             if(this.goalId !=null){
                goalObj = new Goals(this.selectedDirector,
                     goalForm.get('selGoalYr').value,
-                    goalForm.get('goals').value,
+                    filteredGoals,
                     this.goalId);
             } else {
                 goalObj = new Goals(this.selectedDirector,
                     goalForm.get('selGoalYr').value,
-                    goalForm.get('goals').value)
+                    filteredGoals)
             }
+
             console.log("goal object is");
             console.log(goalObj);
             //call service to save data
             this.authService.putGoals(goalObj)
-                .subscribe( data => console.log(data),
+                .subscribe( (data:any) => {
+                    console.log(data);
+                    this.goalForm.controls['goals'] = new FormArray([]);
+
+                    data.obj.goals.forEach((item)=> {
+                            if(!isNull(item)) {
+                                this.goals.push(new FormControl(item.toString()));
+                            } else {
+                                this.goals.push(new FormControl());
+                            }
+                        });
+                        this.goals.push(new FormControl());
+                        this.goalId = data.obj._id;
+                },
                             error => console.log(error));
         }
 }
