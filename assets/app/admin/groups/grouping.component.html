@@ -1,12 +1,5 @@
 <form [formGroup]="groupingForm" (ngSubmit)="saveGrouping(groupingForm)">
-
-    <!--<NC-DropDown-BindTwoField [ctrlName]="directorCtrl"-->
-                              <!--[items]="directorsArr"-->
-                              <!--[placeholderName]="director"-->
-                              <!--[selectOptionField1]="firstName"-->
-                              <!--[selectoptionfield2]="lastName">-->
-    <!--</NC-DropDown-BindTwoField>-->
-    <h4>Choose a Director</h4>
+    <h4 class="labelHeads">Choose a Director</h4>
     <div>
         <select name="directorCtrl"
                 class="form-control"
@@ -18,38 +11,43 @@
             </option>
         </select>
     </div>
-    <br>
 
-    <h4>Add Managers to Their Group</h4>
+    <span class="inputRowSpan">
+        <hr>
+        <h4 class="labelHeads">Add Managers to Group</h4>
+        <button type="button" class="btn btn-success" (click)="addManager()">+</button>
+    </span>
     <div formArrayName="managerCtrl">
         <div *ngFor="let managerItem of managerCtrl.controls; let i = index">
-            <select name="i" class="form-control">
-                <option selected disabled value="0">Choose a Manager</option>
-                <option *ngFor="let manager of managerArr" [ngValue]="manager">
-                    {{manager.firstName}} {{manager.lastName}}
-                </option>
-            </select>
-            <button class="btn btn-danger" type="button" (click)="onDeleteMgr(i)">-</button>
+            <span class="inputRowSpan">
+                <select name="i" class="form-control">
+                    <option selected disabled value="0">Choose a Manager</option>
+                    <option *ngFor="let manager of managerArr" [ngValue]="manager">
+                        {{manager.firstName}} {{manager.lastName}}
+                    </option>
+                </select>
+                <button class="btn btn-danger" type="button" (click)="onDeleteMgr(i)">-</button>
+            </span>
         </div>
-        <br>
-        <button type="button" class="btn btn-success" (click)="addManager()">+</button>
     </div>
-    <br>
+    <hr>
 
-    <h4>Add Contributors to Their Group</h4>
+    <span class="headSpan">
+        <h4 class="labelHeads">Add Contributors to Group</h4>
+        <button type="button" class="btn btn-success" (click)="addContributor()">+</button>
+    </span>
     <div formArrayName="contributorCtrl">
         <div *ngFor="let contributorItem of contributorCtrl.controls; let i = index">
-            <select name="i" class="form-control">
-                <option selected disabled value="0">Choose a Contributor</option>
-                <option *ngFor="let contributor of contributorArr" [ngValue]="contributor">
-                    {{contributor.firstName}} {{contributor.lastName}}
-                </option>
-            </select>
-            <button class="btn btn-danger" type="button" (click)="onDeleteContrib(i)">-</button>
+            <span class="inputRowSpan">
+                <select name="i" class="form-control">
+                    <option selected disabled value="0">Choose a Contributor</option>
+                    <option *ngFor="let contributor of contributorArr" [ngValue]="contributor">
+                        {{contributor.firstName}} {{contributor.lastName}}
+                    </option>
+                </select>
+                <button class="btn btn-danger" type="button" (click)="onDeleteContrib(i)">-</button>
+            </span>
         </div>
-        <br>
-        <button type="button" class="btn btn-success" (click)="addContributor()">+</button>
     </div>
-    <br>
     <button class="btn btn-primary">Save</button>
 </form>

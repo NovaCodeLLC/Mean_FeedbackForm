@@ -14,7 +14,7 @@ import {User} from "../users/user.model";
 @Component({
     selector: 'grouping',
     templateUrl: 'grouping.component.html',
-    //styleUrls: ["grouping.component.css"],
+    styleUrls: ["grouping.component.css"],
 })
 
 export class GroupingComponent implements OnInit{
