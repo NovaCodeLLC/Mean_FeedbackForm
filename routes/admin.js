@@ -7,8 +7,9 @@ var User = require('../models/user');
 var Goal = require('../models/goals');
 var mongoose = require('mongoose');
 
-router.get('/droplist/', function (req, res, next) {
-    User.find({role:'Director'}, function(err, result){
+router.get('/droplist/:type', function (req, res, next) {
+    console.log(req.params.type);
+    User.find({role: req.params.type}, function(err, result){
         if(err){
             return res.status(500).json({
                 title: 'An error ocurred',

@@ -1,0 +1,55 @@
+<form [formGroup]="groupingForm" (ngSubmit)="saveGrouping(groupingForm)">
+
+    <!--<NC-DropDown-BindTwoField [ctrlName]="directorCtrl"-->
+                              <!--[items]="directorsArr"-->
+                              <!--[placeholderName]="director"-->
+                              <!--[selectOptionField1]="firstName"-->
+                              <!--[selectoptionfield2]="lastName">-->
+    <!--</NC-DropDown-BindTwoField>-->
+    <h4>Choose a Director</h4>
+    <div>
+        <select name="directorCtrl"
+                class="form-control"
+                *ngIf="directorsArr"
+                [value]="0">
+            <option selected disabled value="0">Choose a Director</option>
+            <option *ngFor="let director of directorsArr" [ngValue]="director">
+                {{director.firstName}} {{director.lastName}}
+            </option>
+        </select>
+    </div>
+    <br>
+
+    <h4>Add Managers to Their Group</h4>
+    <div formArrayName="managerCtrl">
+        <div *ngFor="let managerItem of managerCtrl.controls; let i = index">
+            <select name="i" class="form-control">
+                <option selected disabled value="0">Choose a Manager</option>
+                <option *ngFor="let manager of managerArr" [ngValue]="manager">
+                    {{manager.firstName}} {{manager.lastName}}
+                </option>
+            </select>
+            <button class="btn btn-danger" type="button" (click)="onDeleteMgr(i)">-</button>
+        </div>
+        <br>
+        <button type="button" class="btn btn-success" (click)="addManager()">+</button>
+    </div>
+    <br>
+
+    <h4>Add Contributors to Their Group</h4>
+    <div formArrayName="contributorCtrl">
+        <div *ngFor="let contributorItem of contributorCtrl.controls; let i = index">
+            <select name="i" class="form-control">
+                <option selected disabled value="0">Choose a Contributor</option>
+                <option *ngFor="let contributor of contributorArr" [ngValue]="contributor">
+                    {{contributor.firstName}} {{contributor.lastName}}
+                </option>
+            </select>
+            <button class="btn btn-danger" type="button" (click)="onDeleteContrib(i)">-</button>
+        </div>
+        <br>
+        <button type="button" class="btn btn-success" (click)="addContributor()">+</button>
+    </div>
+    <br>
+    <button class="btn btn-primary">Save</button>
+</form>

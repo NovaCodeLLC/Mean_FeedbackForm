@@ -1,16 +1,16 @@
-import { NgModule } from '@angular/core';
+import {NgModule, CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { HttpModule } from "@angular/http";
 
 import { AppComponent } from "./app.component";
 import { AuthenticationComponent } from "./admin/administrator.component";
-import { AuthService } from "./admin/admin.service";
+import { AdminService } from "./admin/admin.service";
 import {BootstrapModalModule} from "angular2-modal/plugins/bootstrap";
 
 import { FeedbackComponent} from "./feedbackSubmission/feedback.component";
 
-import { GoalComponent } from "./admin/feedbackgoals.component";
+import { GoalComponent } from "./admin/feedbackgoals/feedbackgoals.component";
 
 import { HeaderComponent } from "./header.component";
 
@@ -25,8 +25,10 @@ import { ModalModule } from "angular2-modal";
 import { reviewFeedbackComponent } from "./reviewFeedback/reviewFeedback.component";
 import { routing } from "./app.routing";
 
-import { AddUserComponent } from "./admin/signup.component";
-import { SigninComponent } from "./admin/signin.component";
+import { AddUserComponent } from "./admin/users/signup.component";
+import { SigninComponent } from "./admin/users/signin.component";
+import {GroupingComponent} from "./admin/groups/grouping.component";
+import {NCDropDown2Items} from "./admin/genericitems_inactive/dropdown2bind.component";
 
 @NgModule({
     declarations: [
@@ -35,6 +37,7 @@ import { SigninComponent } from "./admin/signin.component";
         AuthenticationComponent,
         FeedbackComponent,
         GoalComponent,
+        GroupingComponent,
         HeaderComponent,
         MessageComponent,
         MessageListComponent,
@@ -43,6 +46,7 @@ import { SigninComponent } from "./admin/signin.component";
         SigninComponent,
         reviewFeedbackComponent,
         listReviewFeedbackComponent,
+        NCDropDown2Items
     ],
     imports: [
         BrowserModule,
@@ -53,9 +57,9 @@ import { SigninComponent } from "./admin/signin.component";
         ModalModule.forRoot(),
         BootstrapModalModule
     ],
-    providers: [AuthService],
+    providers: [AdminService],
     bootstrap: [AppComponent],
-
+    schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppModule {
 

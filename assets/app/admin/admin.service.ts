@@ -1,30 +1,21 @@
-import {User} from "./user.model";
+import {User} from "./users/user.model";
 import {Injectable} from "@angular/core";
 import {Http, Headers, Response} from "@angular/http";
 import 'rxjs/Rx'
 import {Observable} from "rxjs";
-import {Goals} from "./goals.model";
+import {Goals} from "./feedbackgoals/goals.model";
 /**
  * Created by Thomas Lesperance on 3/25/2017.
  */
 
 @Injectable()
-export class AuthService{
+export class AdminService{
 
     constructor(private  http: Http){}
 
-    getDirectors(){
-        return this.http.get("http://localhost:3000/admin/droplist")
-            .map(res=>{
-                //transform from json to string array
-                const directors=res.json().obj;
-                let transformStrings : String[] =[];
-
-                for(let director of directors){
-                    transformStrings.push(director);
-                }
-                return transformStrings;
-            })
+    getUsersByType(type : String){
+        return this.http.get("http://localhost:3000/admin/droplist/" + type)
+            .map(res=>{return res.json().obj;})
             .catch((error:Response)=>Observable.throw(error.json()));
     }
 

@@ -1,5 +1,5 @@
 import { Component } from "@angular/core";
-import {AuthService} from "./admin.service";
+import {AdminService} from "./admin.service";
 
 @Component({
     selector: 'app-administrator',
@@ -9,7 +9,7 @@ import {AuthService} from "./admin.service";
                 <ul class="nav nav-tabs">
                     <li routerLinkActive="active"><a [routerLink]="['addUser']">Add User</a></li>
                     <li routerLinkActive="active"><a [routerLink]="['removeUser']">Remove User</a></li>
-                    <li routerLinkActive="active"><a [routerLink]="['groups']">Groups</a></li>
+                    <li routerLinkActive="active"><a [routerLink]="['grouping']">Groups</a></li>
                     <li routerLinkActive="active"><a [routerLink]="['goals']">Feedback Goals</a></li>
                 </ul>
             </nav>
@@ -20,7 +20,7 @@ import {AuthService} from "./admin.service";
     `
 })
 export class AuthenticationComponent {
-    constructor(private authService:AuthService){}
+    constructor(private authService:AdminService){}
 
     isAdmin(){
         return this.authService.isAdmin();
