@@ -50,7 +50,7 @@ router.put('/goal', function(req, res, next){
     }
 
     if(goalId != undefined && goalId != null){
-        Goal.findOneAndUpdate(goalId, update, function(error, result){
+        Goal.findOneAndUpdate(goalId, update,  {new: true}, function(error, result){
             if(error){
                 return res.status(500).json({
                     title: 'An error has occurred',
