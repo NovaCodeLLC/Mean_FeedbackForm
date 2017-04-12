@@ -14,6 +14,12 @@ export class AdminService{
 
     constructor(private  http: Http){}
 
+    getGroup(directorId : String){
+        return this.http.get("http://localhost:3000/admin/group/" + directorId)
+                        .map((res : Response) => {return res.json();})
+                        .catch ((error : Response) => Observable.throw(error.json()));
+    }
+
     putGroup(group:Group){
         const body = JSON.stringify(group);
         const headers = new Headers({'Content-Type' : 'application/json'});

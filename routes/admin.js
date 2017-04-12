@@ -50,6 +50,7 @@ router.put('/goal', function(req, res, next){
                             goals: goal.goals}};
     }
 
+    //if ID exists then run an update on the record, otherwise create a new record.
     if(goalId != undefined && goalId != null){
         Goal.findOneAndUpdate(goalId, update,  {new: true}, function(error, result){
             if(error){
@@ -93,9 +94,7 @@ router.put('/goal', function(req, res, next){
 }); // end of putGoals method
 
 router.get('/goals/:id/:year', function (req, res, next) {
-    // console.log("in get route");
-    // console.log("id is: " + req.params.id);
-    // console.log("year is: " + req.params.year);
+
     //query for year AND director ID
     var query = {director: new mongoose.mongo.ObjectId(req.params.id), year: req.params.year};
     console.log(query);
@@ -172,5 +171,29 @@ router.put('/group', function (req, res, next) {
         });//end callback and save
     }//end of goalID if / else
 });
+
+router.get('/group/:id', function(req, res, next){
+    var  groupId = {directorID: new mongoose.mongo.ObjectId(req.param.id)};
+
+    Group.find(groupId, function(error, data){
+        if(error){
+            return res.status(500).json({
+                title: 'An error occurred',
+                error: error
+            });
+        }// end error
+        if(!data){
+            return res.status(500).json({
+                title: 'Error! The requested record could not be found',
+                obj: data
+            })
+        }
+        return res.status(200).json({
+            title: 'Success! Record was found',
+            obj: data
+        });
+    });//end of find
+
+});//end of get
 
 module.exports = router;

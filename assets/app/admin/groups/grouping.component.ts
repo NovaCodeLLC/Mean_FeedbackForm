@@ -21,7 +21,7 @@ import {Response} from "@angular/http";
 
 export class GroupingComponent implements OnInit{
     //local variables
-    private directorSelection : User;
+    private directorArr : User[];
     private managerArr : User[];
     private contributorArr: User[];
 
@@ -43,13 +43,19 @@ export class GroupingComponent implements OnInit{
     get managerCtrl(): FormArray{return this.groupingForm.get('managerCtrl') as FormArray;}
     get contributorCtrl(): FormArray{return this.groupingForm.get('contributorCtrl') as FormArray;}
 
-    constructor(private adminService : AdminService){}
+    constructor(private adminService : AdminService){
+        this.groupingForm.controls['directorCtrl'].valueChanges.subscribe((data)=>{
+            console.log(this.groupingForm.get('directorCtrl').value);
+            this.adminService.getGroup(this.groupingForm.get('directorCtrl').value._id)
+                .subscribe((data : Response) => console.log(data));
+        });
+    }
 
     ngOnInit(){
         this.adminService.getUsersByType('Director')
-            .subscribe((data : User)=>{
-                this.directorSelection = data;
-                console.log(this.directorSelection);
+            .subscribe((data : User[])=>{
+                this.directorArr = data;
+                console.log(this.directorArr);
             });
 
         this.adminService.getUsersByType('Manager')
