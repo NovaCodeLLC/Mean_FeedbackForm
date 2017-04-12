@@ -21,7 +21,7 @@ import {Response} from "@angular/http";
 
 export class GroupingComponent implements OnInit{
     //local variables
-    private directorsArr : User;
+    private directorSelection : User;
     private managerArr : User[];
     private contributorArr: User[];
 
@@ -48,8 +48,8 @@ export class GroupingComponent implements OnInit{
     ngOnInit(){
         this.adminService.getUsersByType('Director')
             .subscribe((data : User)=>{
-                this.directorsArr = data;
-                console.log(this.directorsArr);
+                this.directorSelection = data;
+                console.log(this.directorSelection);
             });
 
         this.adminService.getUsersByType('Manager')
