@@ -4,6 +4,7 @@ import {Http, Headers, Response} from "@angular/http";
 import 'rxjs/Rx'
 import {Observable} from "rxjs";
 import {Goals} from "./feedbackgoals/goals.model";
+import {Group} from "./groups/group.model";
 /**
  * Created by Thomas Lesperance on 3/25/2017.
  */
@@ -12,6 +13,14 @@ import {Goals} from "./feedbackgoals/goals.model";
 export class AdminService{
 
     constructor(private  http: Http){}
+
+    putGroup(group:Group){
+        const body = JSON.stringify(group);
+        const headers = new Headers({'Content-Type' : 'application/json'});
+        return this.http.put("http://localhost:3000/admin/group/", body, {headers: headers})
+            .map((res:Response)=>res.json())
+            .catch((error:Response) =>Observable.throw(error));
+    }
 
     getUsersByType(type : String){
         return this.http.get("http://localhost:3000/admin/droplist/" + type)

@@ -5,6 +5,7 @@ var express = require('express');
 var router = express.Router();
 var User = require('../models/user');
 var Goal = require('../models/goals');
+var Group = require('../models/group');
 var mongoose = require('mongoose');
 
 router.get('/droplist/:type', function (req, res, next) {
@@ -117,5 +118,59 @@ router.get('/goals/:id/:year', function (req, res, next) {
         });
     });//end callback / find
 }); //end getGoals
+
+router.put('/group', function (req, res, next) {
+
+    if(req.body.goalID != null || req.body.goalID != undefined){
+        var  groupId = {_id: new mongoose.mongo.ObjectId(req.body._id)};
+        var update = {$set: {managerID: req.body.managerIDs,
+                             contributorID: req.body.contributorIDs}};
+    } else {
+        var group = new Group({
+            directorID: req.body.directorID,
+            managerID: req.body.managerIDs,
+            contributorID: req.body.contributorIDs
+        });
+    } // end goalID if/else
+
+
+    //if not null / undefined create update data set, otherwise create new entry
+    if (groupId != null){
+        Group.findOneAndUpdate(groupId, update, {new: true}, function(error, obj){
+            if(error){
+                return res.status(500).json({
+                    title: 'An error has occurred',
+                    error: error
+                });
+            }//end error
+
+            if(!obj){
+                return res.status(500).json({
+                   title: 'Error! record not found',
+                    obj: obj
+                });
+            }//end object not found
+
+            return res.status(201).json({
+                title: 'Success! Your Group has been Updated',
+                obj: obj
+            });
+        }); //end callback and findOneAndUpdate
+    } else {
+        group.save(function(error, obj){
+           if(error){
+               return res.status(500).json({
+                   title: 'An Error has occurred',
+                   error: error
+               });
+           } //end error
+
+            res.status(200).json({
+                title: 'Success! Your new group has been made',
+                obj: obj
+            });
+        });//end callback and save
+    }//end of goalID if / else
+});
 
 module.exports = router;

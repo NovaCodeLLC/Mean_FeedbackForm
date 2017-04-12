@@ -21,7 +21,6 @@ export class GoalComponent implements OnInit{
     private directorsArr : User[];
     private goalYrs : number [] = [];
     private goalId : String;
-    private goalsArr : Goals;
     private selectedDirector : String;
     private selectedYr : String;
 

@@ -10,6 +10,8 @@ import {Component, OnInit} from '@angular/core'
 import {AdminService} from "../admin.service";
 import {FormGroup, FormArray, FormControl, Validators} from "@angular/forms";
 import {User} from "../users/user.model";
+import {Group} from "./group.model";
+import {Response} from "@angular/http";
 
 @Component({
     selector: 'grouping',
@@ -19,7 +21,7 @@ import {User} from "../users/user.model";
 
 export class GroupingComponent implements OnInit{
     //local variables
-    private directorsArr : User[];
+    private directorsArr : User;
     private managerArr : User[];
     private contributorArr: User[];
 
@@ -45,7 +47,7 @@ export class GroupingComponent implements OnInit{
 
     ngOnInit(){
         this.adminService.getUsersByType('Director')
-            .subscribe((data : User[])=>{
+            .subscribe((data : User)=>{
                 this.directorsArr = data;
                 console.log(this.directorsArr);
             });
@@ -83,5 +85,35 @@ export class GroupingComponent implements OnInit{
         if (this.contributorCtrl.length >1){
             this.contributorCtrl.removeAt(i);
         }
+    }
+
+    saveGrouping(groupForm : FormGroup){
+        //this will be the group object to pass to the observable
+        let group : Group;
+
+        //holders to handle converting data
+        let managerObj = this.managerCtrl.value;
+        let contributorObj = this.contributorCtrl.value;
+
+        //transformed arrays where converted data will be stored
+        let managerIDs : String[] = [];
+        let contributorIDs : String[] = [];
+
+        //extract array of IDs
+        managerObj.forEach((item)=>{
+            managerIDs.push(item._id);
+        });
+
+        contributorObj.forEach((item)=>{
+            contributorIDs.push(item._id);
+        });
+
+        group = new Group(  groupForm.get('directorCtrl').value._id,
+                            managerIDs,
+                            contributorIDs);
+
+        console.log("this is your group: " + JSON.stringify(group));
+         this.adminService.putGroup(group)
+             .subscribe((data : Response) => console.log(data));
     }
 }
