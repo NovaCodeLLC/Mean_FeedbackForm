@@ -1,0 +1,53 @@
+<form [formGroup]="groupingForm" (ngSubmit)="saveGrouping(groupingForm)">
+    <h4 class="labelHeads">Choose a Director</h4>
+    <div>
+        <select formControlName="directorCtrl"
+                class="form-control"
+                *ngIf="directorsArr"
+                [value]="0">
+            <option selected disabled value="0">Choose a Director</option>
+            <option *ngFor="let director of directorsArr" [ngValue]="director">
+                {{director?.firstName}} {{director?.lastName}}
+            </option>
+        </select>
+    </div>
+
+    <span class="inputRowSpan">
+        <hr>
+        <h4 class="labelHeads">Add Managers to Group</h4>
+        <button type="button" class="btn btn-success" (click)="addManager()">+</button>
+    </span>
+    <div formArrayName="managerCtrl">
+        <div *ngFor="let managerItem of managerCtrl.controls; let i = index">
+            <span class="inputRowSpan">
+                <select [formControlName]="i" class="form-control">
+                    <option selected disabled value="0">Choose a Manager</option>
+                    <option *ngFor="let manager of managerArr" [ngValue]="manager">
+                        {{manager?.firstName}} {{manager?.lastName}}
+                    </option>
+                </select>
+                <button class="btn btn-danger" type="button" (click)="onDeleteMgr(i)">-</button>
+            </span>
+        </div>
+    </div>
+    <hr>
+
+    <span class="headSpan">
+        <h4 class="labelHeads">Add Contributors to Group</h4>
+        <button type="button" class="btn btn-success" (click)="addContributor()">+</button>
+    </span>
+    <div formArrayName="contributorCtrl">
+        <div *ngFor="let contributorItem of contributorCtrl.controls; let i = index">
+            <span class="inputRowSpan">
+                <select [formControlName]="i" class="form-control">
+                    <option selected disabled value="0">Choose a Contributor</option>
+                    <option *ngFor="let contributor of contributorArr" [ngValue]="contributor">
+                        {{contributor.firstName}} {{contributor.lastName}}
+                    </option>
+                </select>
+                <button class="btn btn-danger" type="button" (click)="onDeleteContrib(i)">-</button>
+            </span>
+        </div>
+    </div>
+    <button class="btn btn-primary">Save</button>
+</form>

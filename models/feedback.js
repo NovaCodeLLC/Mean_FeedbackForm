@@ -11,6 +11,9 @@ var schema = new Schema({
     productBox: {type: String, required: true},
     upsBox:{type: String, required: true},
     downsBox: {type: String, required: true},
+    userID: [{type: Schema.Types.ObjectId, ref: 'User'}],
+    groupID: [{type: Schema.Types.ObjectId, ref: 'Group'}],
+    goalID: [{type: Schema.Types.ObjectId, ref: 'Goals'}]
 });
 
 

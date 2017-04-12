@@ -4,7 +4,7 @@ import { AuthenticationComponent } from "./admin/administrator.component";
 import { ADMIN_ROUTES } from "./admin/admin.routes";
 import {FeedbackComponent} from "./feedbackSubmission/feedback.component";
 import {listReviewFeedbackComponent} from "./reviewFeedback/listFeedbacks.component";
-import {SigninComponent} from "./admin/signin.component";
+import {SigninComponent} from "./admin/users/signin.component";
 
 const APP_ROUTES: Routes = [
     { path: '', redirectTo: 'signin', pathMatch: 'full' },
