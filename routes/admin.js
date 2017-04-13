@@ -120,7 +120,8 @@ router.get('/goals/:id/:year', function (req, res, next) {
 
 router.put('/group', function (req, res, next) {
 
-    if(req.body.goalID != null || req.body.goalID != undefined){
+    if(req.body._id != null || req.body._id != undefined){
+        console.log("found goal ID:" + req.body._id);
         var  groupId = {_id: new mongoose.mongo.ObjectId(req.body._id)};
         var update = {$set: {managerID: req.body.managerIDs,
                              contributorID: req.body.contributorIDs}};
@@ -134,7 +135,8 @@ router.put('/group', function (req, res, next) {
 
 
     //if not null / undefined create update data set, otherwise create new entry
-    if (groupId != null){
+    if (groupId != null && groupId != undefined){
+        console.log("inside findone and update");
         Group.findOneAndUpdate(groupId, update, {new: true}, function(error, obj){
             if(error){
                 return res.status(500).json({
@@ -174,8 +176,8 @@ router.put('/group', function (req, res, next) {
 
 router.get('/group/:id', function(req, res, next){
     var  groupId = {directorID: new mongoose.mongo.ObjectId(req.params.id)};
-
-    Group.find(groupId, function(error,data){
+    console.log(groupId);
+    Group.findOne(groupId, function(error,data){
         if(error){
             return res.status(500).json({
                 title: 'An error occurred',
@@ -187,7 +189,9 @@ router.get('/group/:id', function(req, res, next){
                 title: 'Error! The requested record could not be found',
                 obj: data
             })
-        }
+        }//end no data
+        console.log("we're at data 200")
+        console.log(data);
         return res.status(200).json({
             title: 'Success! Record was found',
             obj: data
@@ -195,5 +199,34 @@ router.get('/group/:id', function(req, res, next){
     });//end of find
 
 });//end of get
+
+router.delete('/group/:id', function(req, res, next){
+    Group.findById(req.params.id, function(err, group){
+        if(err) {
+            return res.status(500).json({
+                title: 'An error has occurred trying to find the requested group',
+                error: err
+            });
+        } // end error if-block of findByID callback
+        if(!group){
+            return res.status(500).json({
+               title: 'The group your wish to delete could not be found',
+                obj: group
+            });
+        }//end null group if-block of findByID Callback
+        group.remove(function(error, result){
+            if(error){
+                return res.status(500).json({
+                    title: 'an error has occurred trying to delete the requested group',
+                    error: error
+                });
+            }// end error if block of remove group callback
+            res.status(200).json({
+                title: 'deleted group',
+                obj: result
+            });
+        });//end remove group / callback
+    });//end findByID / callback
+});//end delete route
 
 module.exports = router;

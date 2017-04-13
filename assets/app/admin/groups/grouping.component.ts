@@ -13,6 +13,7 @@ import {User} from "../users/user.model";
 import {Group} from "./group.model";
 import {Response} from "@angular/http";
 import {isNull} from "util";
+import {isNullOrUndefined} from "util";
 
 @Component({
     selector: 'grouping',
@@ -54,14 +55,67 @@ export class GroupingComponent implements OnInit{
             this.adminService.getGroup(this.groupingForm.get('directorCtrl').value._id)
                 .subscribe((data : any) => {
                     console.log(data);
+
+                    let newContributorCtrl =[];
+                    let newManagerCtrl = [];
+
                     //clear current arrays
-                    this.groupingForm.controls['contributorCtrl'] = new FormArray([new FormControl()]);
-                    this.groupingForm.controls['managerCtrl'] = new FormArray([new FormControl()]);
+                    this.groupingForm.controls['contributorCtrl'] = new FormArray([]);
+                    this.groupingForm.controls['managerCtrl'] = new FormArray([]);
 
                     //set groupID
                     this.groupID = data.obj._id;
 
-                    //todo: consider that the information is an array of ID values.  Must cross reference values against arrays
+                    //how this works:
+                    //1) access the contributor's ID array (data from DB) and iterate over each entry in the array
+                    //2) now take the current contributor's ID (DB data) and compare it to the local contributor's array (local array of contributor user objects in angular)
+                    //3) if the IDs match, push the user to an array that'll later be used to populate the form's contributors
+                        data.obj.contributorID.forEach(contribID=>{
+                            this.contributorArr.forEach(item=>{
+                                if(item._id == contribID){
+                                    newContributorCtrl.push(item);
+                                }
+                            });
+                        });
+
+
+                    //in order to use the array of contributors, we create a new form Control in the formArray for each.
+                    newContributorCtrl.forEach(user=>{
+                        this.contributorCtrl.push(new FormControl());
+                    });
+                    //now we set the controls to the array of user objects in the new contributor array.  Viola we have a populated set of contributors
+                     this.groupingForm.controls['contributorCtrl'].setValue(newContributorCtrl);
+                    //now we add a blank entry to the end of the list to allow a person to add new users.
+                     this.contributorCtrl.push(new FormControl());
+
+
+                     //this set of instructions will do the exact same thing as above, but for the mangers now.
+                    data.obj.managerID.forEach(mngrID=>{
+                            this.managerArr.forEach(item=>{
+                                if(item._id == mngrID){
+                                    newManagerCtrl.push(item);
+                                }
+                            });
+                        });
+
+                    //in order to use the array of contributors, we create a new form Control in the formArray for each.
+                    newManagerCtrl.forEach(user=>{
+                        this.managerCtrl.push(new FormControl());
+                    });
+                    //now we set the controls to the array of user objects in the new contributor array.  Viola we have a populated set of contributors
+                    this.groupingForm.controls['managerCtrl'].setValue(newManagerCtrl);
+                    //now we add a blank entry to the end of the list to allow a person to add new users.
+                    this.managerCtrl.push(new FormControl());
+                },
+                error=>{
+                    //reset my form data, controls, and tracking variables when a record doesn't exist.
+                    this.groupingForm.controls['contributorCtrl'] = new FormArray([]);
+                    this.groupingForm.controls['managerCtrl'] = new FormArray([]);
+
+                    this.contributorCtrl.push(new FormControl());
+                    this.managerCtrl.push(new FormControl());
+
+                    this.groupID = null;
                 });
         });
     }
@@ -112,29 +166,49 @@ export class GroupingComponent implements OnInit{
         //this will be the group object to pass to the observable
         let group : Group;
 
-        //holders to handle converting data
-        let managerObj = this.managerCtrl.value;
-        let contributorObj = this.contributorCtrl.value;
+        //these next lines will filter null / novalue entries
+        let managers = groupForm.get('managerCtrl').value;
+        let contributors = groupForm.get('contributorCtrl').value;
+
+        let filteredManagers = managers.filter((item)=>{
+            return (item != (undefined || '' || null));
+        });
+
+        let filteredContributors = contributors.filter(item=> {
+           return (item != (undefined || '' || null));
+        });
 
         //transformed arrays where converted data will be stored
         let managerIDs : String[] = [];
         let contributorIDs : String[] = [];
 
         //extract array of IDs
-        managerObj.forEach((item)=>{
+        filteredManagers.forEach((item)=>{
             managerIDs.push(item._id);
         });
 
-        contributorObj.forEach((item)=>{
+        filteredContributors.forEach((item)=>{
             contributorIDs.push(item._id);
         });
 
-        group = new Group(  groupForm.get('directorCtrl').value._id,
-                            managerIDs,
-                            contributorIDs);
-
+        //determines if we're creating a new group or updating the current group
+        if(isNullOrUndefined(this.groupID)) {
+            group = new Group(groupForm.get('directorCtrl').value._id,
+                managerIDs,
+                contributorIDs);
+        } else {
+            group = new Group(groupForm.get('directorCtrl').value._id,
+                                managerIDs,
+                                contributorIDs,
+                                this.groupID);
+        }
         console.log("this is your group: " + JSON.stringify(group));
          this.adminService.putGroup(group)
              .subscribe((data : Response) => console.log(data));
+    }
+
+    deleteRecord(){
+        this.adminService.deleteGroup(this.groupID)
+            .subscribe(data => console.log(data));
     }
 }

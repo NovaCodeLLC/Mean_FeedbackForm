@@ -6,6 +6,7 @@ export class Group{
     constructor(
       public directorID: String,
       public managerIDs: String[],
-      public contributorIDs: String[]
+      public contributorIDs: String[],
+      public _id? : String
     ){};
 }

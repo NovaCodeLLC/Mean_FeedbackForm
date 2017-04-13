@@ -140,7 +140,7 @@ router.delete('/:id', function(req, res, next) {
                 });
             }
             res.status(200).json({
-                message: 'Deleted message',
+                message: 'Deleted feedback',
                 obj: result
             });
         });
