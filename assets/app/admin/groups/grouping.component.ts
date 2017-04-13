@@ -12,6 +12,7 @@ import {FormGroup, FormArray, FormControl, Validators} from "@angular/forms";
 import {User} from "../users/user.model";
 import {Group} from "./group.model";
 import {Response} from "@angular/http";
+import {isNull} from "util";
 
 @Component({
     selector: 'grouping',
@@ -24,6 +25,7 @@ export class GroupingComponent implements OnInit{
     private directorArr : User[];
     private managerArr : User[];
     private contributorArr: User[];
+    private groupID : String;
 
     //generate groupingForm
     groupingForm = new FormGroup({
@@ -40,14 +42,27 @@ export class GroupingComponent implements OnInit{
         ])
     });
 
+    //getter methods
     get managerCtrl(): FormArray{return this.groupingForm.get('managerCtrl') as FormArray;}
     get contributorCtrl(): FormArray{return this.groupingForm.get('contributorCtrl') as FormArray;}
 
     constructor(private adminService : AdminService){
+
+        //listens to changes on the directorCtrl formControl in our FormBuilder Model
         this.groupingForm.controls['directorCtrl'].valueChanges.subscribe((data)=>{
             console.log(this.groupingForm.get('directorCtrl').value);
             this.adminService.getGroup(this.groupingForm.get('directorCtrl').value._id)
-                .subscribe((data : Response) => console.log(data));
+                .subscribe((data : any) => {
+                    console.log(data);
+                    //clear current arrays
+                    this.groupingForm.controls['contributorCtrl'] = new FormArray([new FormControl()]);
+                    this.groupingForm.controls['managerCtrl'] = new FormArray([new FormControl()]);
+
+                    //set groupID
+                    this.groupID = data.obj._id;
+
+                    //todo: consider that the information is an array of ID values.  Must cross reference values against arrays
+                });
         });
     }
 

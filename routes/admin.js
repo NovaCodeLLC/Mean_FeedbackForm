@@ -173,9 +173,9 @@ router.put('/group', function (req, res, next) {
 });
 
 router.get('/group/:id', function(req, res, next){
-    var  groupId = {directorID: new mongoose.mongo.ObjectId(req.param.id)};
+    var  groupId = {directorID: new mongoose.mongo.ObjectId(req.params.id)};
 
-    Group.find(groupId, function(error, data){
+    Group.find(groupId, function(error,data){
         if(error){
             return res.status(500).json({
                 title: 'An error occurred',
