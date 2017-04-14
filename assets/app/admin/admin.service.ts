@@ -19,6 +19,7 @@ export class AdminService{
             .map((res:Response) =>{return res.json();})
             .catch((error:Response) => Observable.throw(error.json()));
     }
+
     getGroup(directorId : String){
         return this.http.get("http://localhost:3000/admin/group/" + directorId)
                         .map((res : Response) => {return res.json();})

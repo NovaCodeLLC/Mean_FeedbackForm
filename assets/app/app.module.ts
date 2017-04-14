@@ -27,9 +27,14 @@ import { routing } from "./app.routing";
 
 import { AddUserComponent } from "./admin/users/signup.component";
 import { SigninComponent } from "./admin/users/signin.component";
-import {GroupingComponent} from "./admin/groups/grouping.component";
-import {NCDropDown2Items} from "./admin/genericitems_inactive/dropdown2bind.component";
+import { GroupingComponent} from "./admin/groups/grouping.component";
+import { NCDropDown2Items} from "./admin/genericitems_inactive/dropdown2bind.component";
 import { RemoveUserComponent } from "./admin/users/removeUser.component";
+import { MdInputModule, MdAutocompleteModule, MdCoreModule } from "@angular/material";
+import { BrowserAnimationsModule} from "@angular/platform-browser/animations";
+
+import 'hammerjs';
+
 
 @NgModule({
     declarations: [
@@ -48,7 +53,7 @@ import { RemoveUserComponent } from "./admin/users/removeUser.component";
         reviewFeedbackComponent,
         listReviewFeedbackComponent,
         NCDropDown2Items,
-        RemoveUserComponent
+        RemoveUserComponent,
 
     ],
     imports: [
@@ -59,6 +64,11 @@ import { RemoveUserComponent } from "./admin/users/removeUser.component";
         routing,
         ModalModule.forRoot(),
         BootstrapModalModule,
+        BrowserAnimationsModule,
+        MdInputModule,
+        MdAutocompleteModule,
+        MdCoreModule,
+
     ],
     providers: [AdminService],
     bootstrap: [AppComponent],

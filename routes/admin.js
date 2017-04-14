@@ -9,26 +9,49 @@ var Group = require('../models/group');
 var mongoose = require('mongoose');
 
 router.get('/droplist/:type', function (req, res, next) {
-    console.log(req.params.type);
-    User.find({role: req.params.type}, function(err, result){
-        if(err){
-            return res.status(500).json({
-                title: 'An error ocurred',
-                obj: err
-            })
-        } //end error
+    console.log("req body type is: " + req.params.type);
+    if(req.params.type != null || req.params.type != undefined) {
+        User.find({role: req.params.type}, function (err, result) {
+            if (err) {
+                return res.status(500).json({
+                    title: 'An error ocurred',
+                    obj: err
+                })
+            } //end error
 
-        if(!result){
-            return res.status(500).json({
-                title: 'No Directors Found',
+            if (!result) {
+                return res.status(500).json({
+                    title: 'No Directors Found',
+                    obj: result
+                });
+            }//end of null user
+            return res.status(200).json({
+                title: 'Success!',
                 obj: result
             });
-        }//end of null user
-        return res.status(200).json({
-           title: 'Success!',
-            obj: result
-        });
-    }); //end find getDirectors method
+        }); //end find get users by type block
+    } else {
+        console.log("in find all");
+        User.find()
+            .exec(function(error, users){
+            if(error){
+                res.status(500).json({
+                    title: 'An error has occurred',
+                    error: error
+                });
+            }
+            if(!users){
+                res.status(500).json({
+                   title: 'No users were found',
+                    obj: users
+                });
+            }
+            res.status(200).json({
+               title: 'Success! Found Available Users',
+                obj: users
+            });
+        });// end else block to return a list of all users / callback for block
+    }
 });
 
 router.put('/goal', function(req, res, next){
