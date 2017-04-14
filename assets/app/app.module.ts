@@ -29,6 +29,7 @@ import { AddUserComponent } from "./admin/users/signup.component";
 import { SigninComponent } from "./admin/users/signin.component";
 import {GroupingComponent} from "./admin/groups/grouping.component";
 import {NCDropDown2Items} from "./admin/genericitems_inactive/dropdown2bind.component";
+import { RemoveUserComponent } from "./admin/users/removeUser.component";
 
 @NgModule({
     declarations: [
@@ -46,7 +47,9 @@ import {NCDropDown2Items} from "./admin/genericitems_inactive/dropdown2bind.comp
         SigninComponent,
         reviewFeedbackComponent,
         listReviewFeedbackComponent,
-        NCDropDown2Items
+        NCDropDown2Items,
+        RemoveUserComponent
+
     ],
     imports: [
         BrowserModule,
@@ -55,7 +58,7 @@ import {NCDropDown2Items} from "./admin/genericitems_inactive/dropdown2bind.comp
         ReactiveFormsModule,
         routing,
         ModalModule.forRoot(),
-        BootstrapModalModule
+        BootstrapModalModule,
     ],
     providers: [AdminService],
     bootstrap: [AppComponent],

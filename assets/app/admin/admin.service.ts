@@ -33,7 +33,7 @@ export class AdminService{
             .catch((error:Response) =>Observable.throw(error));
     }
 
-    getUsersByType(type : String){
+    getUsersByType(type? : String){
         return this.http.get("http://localhost:3000/admin/droplist/" + type)
             .map(res=>{return res.json().obj;})
             .catch((error:Response)=>Observable.throw(error.json()));
