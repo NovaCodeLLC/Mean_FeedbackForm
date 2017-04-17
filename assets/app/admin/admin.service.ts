@@ -1,10 +1,11 @@
 import {User} from "./users/user.model";
 import {Injectable} from "@angular/core";
-import {Http, Headers, Response} from "@angular/http";
+import {Http, Headers, Response, RequestOptions} from "@angular/http";
 import 'rxjs/Rx'
 import {Observable} from "rxjs";
 import {Goals} from "./feedbackgoals/goals.model";
 import {Group} from "./groups/group.model";
+import {deleteUserModel} from "./users/deleteUserGroup.model";
 /**
  * Created by Thomas Lesperance on 3/25/2017.
  */
@@ -13,6 +14,15 @@ import {Group} from "./groups/group.model";
 export class AdminService{
 
     constructor(private  http: Http){}
+
+    deleteUsers(users : deleteUserModel){
+        const body = JSON.stringify(users);
+        const headers = new Headers({'Content-Type' : 'application/json'});
+        console.log(body);
+        return this.http.delete("http://localHost:3000/admin/user/delete/", new RequestOptions({body: body, headers: headers}))
+                    .map((res: Response) => {return res.json()})
+                    .catch((error:Response)=>Observable.throw(error.json()));
+    }
 
     deleteGroup(groupID : String){
         return this.http.delete("http://localhost:3000/admin/group/"+groupID)

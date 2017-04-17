@@ -16,16 +16,16 @@ module.exports = {
                 loaders: [
                     'awesome-typescript-loader',
                     'angular2-template-loader',
-                    'angular2-router-loader'
+                    'angular2-router-loader',
                 ]
             },
             {
                 test: /\.html$/,
-                loader: 'html'
+                loader: 'html-loader'
             },
             {
                 test: /\.css$/,
-                loader: 'raw'
+                loader: 'raw-loader'
             }
         ]
     },

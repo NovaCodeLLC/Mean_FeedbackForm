@@ -10,7 +10,8 @@ var mongoose = require('mongoose');
 
 router.get('/droplist/:type', function (req, res, next) {
     console.log("req body type is: " + req.params.type);
-    if(req.params.type != null || req.params.type != undefined) {
+    if(req.params.type != null && req.params.type != 'undefined') {
+        console.log("inside fetch with type param");
         User.find({role: req.params.type}, function (err, result) {
             if (err) {
                 return res.status(500).json({
@@ -66,7 +67,7 @@ router.put('/goal', function(req, res, next){
     });
 
     //check to decide if we need an ID object
-    if(req.body._id != null || req.body._id != undefined){
+    if(req.body._id != null && req.body._id != 'undefined'){
         var  goalId = {_id: new mongoose.mongo.ObjectId(req.body._id)};
         var update = {$set: {director: goal.director,
                             year: goal.year,
@@ -74,7 +75,7 @@ router.put('/goal', function(req, res, next){
     }
 
     //if ID exists then run an update on the record, otherwise create a new record.
-    if(goalId != undefined && goalId != null){
+    if(goalId != 'undefined' && goalId != null){
         Goal.findOneAndUpdate(goalId, update,  {new: true}, function(error, result){
             if(error){
                 return res.status(500).json({
@@ -143,7 +144,7 @@ router.get('/goals/:id/:year', function (req, res, next) {
 
 router.put('/group', function (req, res, next) {
 
-    if(req.body._id != null || req.body._id != undefined){
+    if(req.body._id != null && req.body._id != 'undefined'){
         console.log("found goal ID:" + req.body._id);
         var  groupId = {_id: new mongoose.mongo.ObjectId(req.body._id)};
         var update = {$set: {managerID: req.body.managerIDs,
@@ -158,7 +159,7 @@ router.put('/group', function (req, res, next) {
 
 
     //if not null / undefined create update data set, otherwise create new entry
-    if (groupId != null && groupId != undefined){
+    if (groupId != null && groupId != 'undefined'){
         console.log("inside findone and update");
         Group.findOneAndUpdate(groupId, update, {new: true}, function(error, obj){
             if(error){
@@ -251,5 +252,70 @@ router.delete('/group/:id', function(req, res, next){
         });//end remove group / callback
     });//end findByID / callback
 });//end delete route
+
+router.delete('/user/delete', function(req, res, next){
+
+    var deleteUsersObj = new DeleteUserObj( req.body.directorID,
+                                            req.body.managerID,
+                                            req.body.contributorID,
+                                            req.body.adminID);
+
+    console.log("Delete users obj:")
+    console.log(deleteUsersObj);
+    //create a flat array of all users
+    var flatArr = [];
+
+    if( deleteUsersObj.Directors != null &&  deleteUsersObj.Directors != 'undefined') {
+        deleteUsersObj.Directors.forEach(function (item) {
+            flatArr.push(new mongoose.mongo.ObjectId(item));
+        });
+    }
+
+    if( deleteUsersObj.Contributors != null && deleteUsersObj.Contributors != 'undefined') {
+        deleteUsersObj.Contributors.forEach(function (item) {
+            flatArr.push(new mongoose.mongo.ObjectId(item));
+        });
+    }
+
+    if(deleteUsersObj.Managers != null && deleteUsersObj.Managers != 'undefined') {
+        deleteUsersObj.Managers.forEach(function (item) {
+            flatArr.push(new mongoose.mongo.ObjectId(item));
+        });
+    }
+
+    // console.log("flat array:" + flatArr);
+    //break out items for groups
+
+    var queryUsers = {_id: {$in: flatArr}};
+    // var queryContributors ={contributorID: {$pullAll: idArr}};
+    // var queryManagers ={managerID: {$pullAll: idArr}};
+
+    User.remove(queryUsers, function(error, obj){
+        if(error){
+            res.status(500).json({
+                title: 'An Error has occurred while trying to delete your users',
+                error: error
+            });
+        }//end error if block
+        if(!obj){
+            res.status(500).json({
+                title: 'No Users were found',
+                obj: obj
+            });
+        }//end null response if block
+        res.status(201).json({
+           title: 'Users were successfully deleted',
+            obj: obj
+        });
+    });//end remove and its callback for user table
+});//end delete user route
+
+//makes the delete route easier to handle
+function DeleteUserObj(Directors, Managers, Contributors, Admins){
+    this.Managers = Managers;
+    this.Directors = Directors;
+    this.Contributors = Contributors;
+    this.Admins = Admins;
+}
 
 module.exports = router;
