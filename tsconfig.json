@@ -5,7 +5,13 @@
         "noImplicitAny": false,
         "sourceMap": false,
         "emitDecoratorMetadata": true,
-        "experimentalDecorators": true
+        "experimentalDecorators": true,
+        "types": [
+            "hammerjs"
+        ],
+        "typeRoots": [
+            "./node_modules/@types"
+        ]
     },
     "exclude": [
         "node_modules",

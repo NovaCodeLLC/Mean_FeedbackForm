@@ -26,6 +26,16 @@ module.exports = {
             {
                 test: /\.css$/,
                 loader: 'raw-loader'
+            },
+
+            /*
+             * To support for *.scss files
+             *
+             */
+            {
+                test: /\.scss$/,
+                exclude: /node_modules/,
+                loaders: ['raw-loader', 'sass-loader']
             }
         ]
     },

@@ -10,6 +10,8 @@ import {Feedback} from "./feedback.model";
 
 import { Modal } from 'angular2-modal/plugins/bootstrap';
 import {Overlay} from "angular2-modal";
+import {ThankYouComponent} from "../modals/thankYouModal.component";
+import {MdDialog, DialogPosition} from "@angular/material";
 
 @Component({
     selector: 'Form-template',
@@ -21,10 +23,10 @@ import {Overlay} from "angular2-modal";
 export class FeedbackComponent  {
     feedbackForm : FormGroup;
 
-    constructor(@Inject(FormBuilder) fb : FormBuilder, private feedbackService: feedbackService,
-                overlay: Overlay,
-                vcRef: ViewContainerRef,
-                private modal: Modal){
+    constructor(@Inject(FormBuilder) fb : FormBuilder,
+                 private feedbackService: feedbackService,
+                 private dialog : MdDialog){
+
         this.feedbackForm = fb.group({
 
             nameBox: ['',Validators.required],
@@ -34,8 +36,7 @@ export class FeedbackComponent  {
             upsBox: ['',Validators.required],
 
             downsBox: ['',Validators.required],
-        })
-        overlay.defaultViewContainer = vcRef;
+        });
     }
 
     submitFeedback(group : FormGroup){
@@ -45,21 +46,16 @@ export class FeedbackComponent  {
                                         group.get('downsBox').value);
 
         if(confirm("Is the data entered what you want to submit?")){
-
-            this.feedbackService.addFeedback(feedback)
-                                .subscribe(
-                                    data => {
-                                        console.log(data);
-                                        this.modal.alert()
-                                            .size('sm')
-                                            .showClose(true)
-                                            .title('Submitted!')
-                                            .body('Thank you for submitting your feedback.')
-                                            .open();
-                                        this.feedbackForm.reset();
-                                    },
-                                    error => console.log(error)
-                                );
+            this.dialog.open(ThankYouComponent);
+            // this.feedbackService.addFeedback(feedback)
+            //                     .subscribe(
+            //                         data => {
+            //                             console.log(data);
+            //                             this.dialog.open(ThankYouComponent)
+            //                             this.feedbackForm.reset();
+            //                         },
+            //                         error => console.log(error)
+            //                     );
         }
     }
 }

@@ -30,10 +30,14 @@ import { SigninComponent } from "./admin/users/signin.component";
 import { GroupingComponent} from "./admin/groups/grouping.component";
 import { NCDropDown2Items} from "./admin/genericitems_inactive/dropdown2bind.component";
 import { RemoveUserComponent } from "./admin/users/removeUser.component";
-import { MdInputModule, MdAutocompleteModule, MdCoreModule } from "@angular/material";
+import {
+    MdInputModule, MdAutocompleteModule, MdCoreModule, MdDialogModule, MdButtonModule,
+    OverlayContainer
+} from "@angular/material";
 import { BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 import 'hammerjs';
+import {ThankYouComponent} from "./modals/thankYouModal.component";
 
 
 @NgModule({
@@ -54,6 +58,7 @@ import 'hammerjs';
         listReviewFeedbackComponent,
         NCDropDown2Items,
         RemoveUserComponent,
+        ThankYouComponent
 
     ],
     imports: [
@@ -68,12 +73,17 @@ import 'hammerjs';
         MdInputModule,
         MdAutocompleteModule,
         MdCoreModule,
+        MdDialogModule,
+        MdButtonModule
 
     ],
+
+    entryComponents: [
+        ThankYouComponent
+    ],
+
     providers: [AdminService],
     bootstrap: [AppComponent],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class AppModule {
-
-}
+export class AppModule {}

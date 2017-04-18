@@ -39,7 +39,7 @@ export class GroupingComponent implements OnInit{
         ]),
 
         managerCtrl: new FormArray([
-            new FormControl(('', Validators.required))
+            new FormControl('', Validators.required)
         ])
     });
 
