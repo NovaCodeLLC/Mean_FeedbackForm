@@ -1,7 +1,9 @@
-import { Component, OnInit } from "@angular/core";
+import {Component, OnInit, ViewContainerRef} from "@angular/core";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import {AdminService} from "../admin.service";
 import {User} from "./user.model";
+import { Modal } from "angular2-modal/plugins/bootstrap"
+import {Overlay} from "angular2-modal";
 
 @Component({
     selector: 'app-signup',
@@ -10,7 +12,12 @@ import {User} from "./user.model";
 export class AddUserComponent implements OnInit {
     myForm: FormGroup;
 
-    constructor(private authService: AdminService){}
+    constructor(private authService: AdminService,
+                overlay: Overlay,
+                vcRef: ViewContainerRef,
+                private modal: Modal) {
+        overlay.defaultViewContainer = vcRef;
+    }
 
     onSubmit() {
 
@@ -38,7 +45,15 @@ export class AddUserComponent implements OnInit {
                                 accessLevel);
 
         this.authService.signUp(user)
-            .subscribe(data=>console.log(data),
+            .subscribe(data=> {
+                                this.modal.alert()
+                                .size('sm')
+                                .showClose(true)
+                                .title('Success!')
+                                .body('You have added a new user')
+                                .open();
+                                console.log(data)
+                        },
                         error => console.error(error)
                         );
         this.myForm.reset();

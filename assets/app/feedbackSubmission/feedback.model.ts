@@ -3,9 +3,12 @@
  */
 export class Feedback {
 
-    constructor(public nameBox: string,
-                public productBox: string,
-                public upsBox: string,
-                public downsBox: string,
-                public feedbackID?:string,) {}
+    constructor(public nameBox: String,
+                public productBox: String,
+                public upsBox: String[],
+                public downsBox: String[],
+                public feedbackID?:String,
+                public userID? : String,
+                public groupID? : String,
+                public goalID? : String) {}
 }

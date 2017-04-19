@@ -15,6 +15,14 @@ export class AdminService{
 
     constructor(private  http: Http){}
 
+    updateUsersGroupID(group:Group){
+        const body = JSON.stringify(group);
+        const headers = new Headers({'Content-Type' : 'application/json'});
+        return this.http.put('http://localhost:3000/admin/group/updateGroupID/', body, {headers: headers})
+                        .map((res : Response) => {return res.json()})
+                        .catch((error:Response) => Observable.throw(error.json()));
+    }
+
     deleteUsers(users : deleteUserModel){
         const body = JSON.stringify(users);
         const headers = new Headers({'Content-Type' : 'application/json'});

@@ -6,7 +6,7 @@
 The purpose of this component is to create groups
  */
 
-import {Component, OnInit} from '@angular/core'
+import {Component, OnInit, ViewContainerRef} from '@angular/core'
 import {AdminService} from "../admin.service";
 import {FormGroup, FormArray, FormControl, Validators} from "@angular/forms";
 import {User} from "../users/user.model";
@@ -14,6 +14,8 @@ import {Group} from "./group.model";
 import {Response} from "@angular/http";
 import {isNull} from "util";
 import {isNullOrUndefined} from "util";
+import {Overlay} from "angular2-modal";
+import {Modal} from 'angular2-modal/plugins/bootstrap'
 
 @Component({
     selector: 'grouping',
@@ -47,7 +49,12 @@ export class GroupingComponent implements OnInit{
     get managerCtrl(): FormArray{return this.groupingForm.get('managerCtrl') as FormArray;}
     get contributorCtrl(): FormArray{return this.groupingForm.get('contributorCtrl') as FormArray;}
 
-    constructor(private adminService : AdminService){
+    constructor(private adminService : AdminService,
+                overlay: Overlay,
+                vcRef: ViewContainerRef,
+                private modal: Modal){
+
+        overlay.defaultViewContainer = vcRef;
 
         //listens to changes on the directorCtrl formControl in our FormBuilder Model
         this.groupingForm.controls['directorCtrl'].valueChanges.subscribe((data)=>{
@@ -202,13 +209,48 @@ export class GroupingComponent implements OnInit{
                                 contributorIDs,
                                 this.groupID);
         }
-        console.log("this is your group: " + JSON.stringify(group));
+
          this.adminService.putGroup(group)
-             .subscribe((data : Response) => console.log(data));
+             .subscribe((data : Response) =>{
+                                                this.groupID = data.obj._id;
+                                                console.log(data);
+
+                                                 this.modal.alert()
+                                                     .size('lg')
+                                                     .showClose(true)
+                                                     .title('Success!')
+                                                     .body('Your group has been Updated.')
+                                                     .open();
+                                        },
+                                        error=> console.log("error is :" + error.json()),
+                                        ()   =>{
+                                            let completedGroup = new Group( group.directorID,
+                                                                            group.managerIDs,
+                                                                            group.contributorIDs,
+                                                                            this.groupID);
+                                         this.updateUsersGroupID(completedGroup)});
+    }
+
+    updateUsersGroupID(data:any){
+        let group : Group = data;
+        console.log("updating user's profiles with their new groups");
+        console.log(group);
+        this.adminService.updateUsersGroupID(group)
+            .subscribe((data)=>console.log(data));
     }
 
     deleteRecord(){
         this.adminService.deleteGroup(this.groupID)
-            .subscribe(data => console.log(data));
+            .subscribe(data => {
+                                this.modal.alert()
+                                    .size('lg')
+                                    .showClose(true)
+                                    .title('Success!')
+                                    .body('Your group has been deleted!')
+                                    .open();
+
+                                console.log(data);
+
+            });
     }
 }

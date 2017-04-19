@@ -9,8 +9,9 @@ import {Feedback} from "./feedback.model";
 
 import {Observable} from "rxjs";
 
-import 'rxjs/Rx'
-import 'rxjs/add/operator/map'
+import 'rxjs/Rx';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/catch';
 
 @Injectable()
 export class feedbackService{
@@ -23,5 +24,16 @@ export class feedbackService{
         return this.http.post('http://localhost:3000/feedback', body, {headers: headers})
             .map((response: Response) => response.json())
             .catch((error: Response) => Observable.throw(error.json()));
+    }
+
+    getFeedbackGoals(groupID : String){
+        console.log(groupID);
+        return this.http.get("http://localhost:3000/feedback/goals/" + groupID)
+                    .map((res : Response)=> {return res.json().obj})
+                    .catch((error) => Observable.throw(error.json()));
+    }
+
+    getGroupID(){
+        return localStorage.getItem('groupID')
     }
 }

@@ -2,13 +2,15 @@
  * Created by TXL8009 on 3/27/2017.
  */
 
-import {Component, OnInit} from "@angular/core";
+import {Component, OnInit, ViewContainerRef} from "@angular/core";
 import {FormGroup, FormArray, FormControl, Validators} from "@angular/forms";
 import {AdminService} from "../admin.service";
 import {User} from "../users/user.model";
 import {Goals} from "./goals.model";
+import {Modal} from 'angular2-modal/plugins/bootstrap'
 import {isNullOrUndefined} from "util";
 import {isNull} from "util";
+import {Overlay} from "angular2-modal";
 
 @Component({
     selector: 'goalTemplate',
@@ -37,7 +39,10 @@ export class GoalComponent implements OnInit{
     //used to get information from our dynamic goal list and make use of calls in other methods
     get goals(): FormArray{return this.goalForm.get('goals') as FormArray;}
 
-    constructor(private adminService:AdminService){}
+    constructor(private adminService:AdminService,
+                overlay: Overlay,
+                vcRef: ViewContainerRef,
+                private modal: Modal) {overlay.defaultViewContainer = vcRef;}
 
     //initialize the data on the form.
     ngOnInit(){
@@ -140,6 +145,13 @@ export class GoalComponent implements OnInit{
                         });
                         this.goals.push(new FormControl());
                         this.goalId = data.obj._id;
+
+                        this.modal.alert()
+                            .size('lg')
+                            .showClose(true)
+                            .title('Success!')
+                            .body('Your goals have been submitted / updated!')
+                            .open();
                 },
                             error => console.log(error));
         }

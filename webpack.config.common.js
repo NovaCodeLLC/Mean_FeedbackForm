@@ -1,4 +1,5 @@
 var webpack = require('webpack');
+var helpers = require('./helpers');
 
 module.exports = {
     entry: {
@@ -43,8 +44,9 @@ module.exports = {
     plugins: [
         new webpack.ContextReplacementPlugin(
             // The (\\|\/) piece accounts for path separators in *nix and Windows
-            /angular(\\|\/)core(\\|\/)(esm(\\|\/)src|src)(\\|\/)linker/,
-            './src' // location of your src
+            /angular(\\|\/)core(\\|\/)@angular/,
+            helpers.root('./assets/app'), // location of your src
+            {} // a map of your routes
         )
     ]
 };

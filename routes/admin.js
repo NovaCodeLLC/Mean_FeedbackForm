@@ -283,6 +283,12 @@ router.delete('/user/delete', function(req, res, next){
         });
     }
 
+    if(deleteUsersObj.Admins != null && deleteUsersObj.Admins != 'undefined') {
+        deleteUsersObj.Admins.forEach(function (item) {
+            flatArr.push(new mongoose.mongo.ObjectId(item));
+        });
+    }
+
     // console.log("flat array:" + flatArr);
     //break out items for groups
 
@@ -318,4 +324,55 @@ function DeleteUserObj(Directors, Managers, Contributors, Admins){
     this.Admins = Admins;
 }
 
+
+router.put('/group/updateGroupID', function(req, res, err){
+    var flatArr = [];
+    console.log("request body: ");
+    console.log(req.body);
+
+    if( req.body.directorID != null &&  req.body.directorID != 'undefined') {
+        flatArr.push(new mongoose.mongo.ObjectId(req.body.directorID));
+    }
+
+    if( req.body.contributorIDs != null &&  req.body.contributorIDs != 'undefined') {
+        req.body.contributorIDs.forEach(function (userID) {
+            flatArr.push(new mongoose.mongo.ObjectId(userID));
+        });
+    }
+
+    if( req.body.managerIDs != null &&  req.body.managerIDs != 'undefined') {
+        req.body.managerIDs.forEach(function (userID) {
+            flatArr.push(new mongoose.mongo.ObjectId(userID))
+        });
+    }
+
+    var groupID = req.body._id;
+    var queryIDs = {_id: {$in: flatArr}};
+    var updateTo = {$set: {groupID: groupID}};
+
+    console.log("Update ID array: " + flatArr);
+    console.log("queryIDs: " + JSON.stringify(queryIDs));
+    console.log("group ID set to: " + JSON.stringify(updateTo));
+
+   User.update(queryIDs, updateTo, {multi: true}, function(err, obj){
+       if(err){
+           return res.status(500).json({
+               title: 'An error has occurred',
+               error: err
+           });
+       }//end error if
+
+       if(!obj){
+           return res.status(500).json({
+              title: 'An error has occurred',
+               obj: obj
+           });
+       }//end null object if
+
+       return res.status(201).json({
+          title: 'Success! users groupIDs updated',
+           obj: obj
+       });
+   });//end userUpdate / callback
+});//end put for batch user groupID Update / callback
 module.exports = router;

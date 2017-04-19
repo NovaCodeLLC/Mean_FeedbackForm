@@ -8,7 +8,7 @@ var schema = new Schema({
     password: {type: String, required: true},
     email: {type: String, required: true, unique: true},
     role: {type: String, required: true},
-    groupID: {type: String, required: true}
+    groupID: {type: String}
 });
 
 schema.plugin(mongooseUniqueValidator);

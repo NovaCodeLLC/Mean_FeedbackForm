@@ -18,6 +18,7 @@ export class SigninComponent {
             .subscribe((data : any)=>{
                 localStorage.setItem('token', data.token);
                 localStorage.setItem('userId', data.userId);
+                localStorage.setItem('groupID', data.groupID)
                 this.router.navigateByUrl('/feedback');
             },
             )

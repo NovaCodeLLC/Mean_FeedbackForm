@@ -1,10 +1,11 @@
 import {Feedback} from "../../feedbackSubmission/feedback.model";
 export class User {
-    constructor(public email: string,
-                public password: string,
-                public firstName?: string,
-                public lastName?: string,
-                public role?: string,
+    constructor(public email: String,
+                public password: String,
+                public firstName?: String,
+                public lastName?: String,
+                public role?: String,
                 public feedback?: Feedback[],
-                public _id? : string) {}
+                public _id? : String,
+                public groupID? : String) {}
 }

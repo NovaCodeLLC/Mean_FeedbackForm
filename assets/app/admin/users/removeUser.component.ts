@@ -2,13 +2,14 @@
  * Created by TXL8009 on 4/13/2017.
  */
 
-import {Component, OnInit} from "@angular/core";
+import {Component, OnInit, ViewContainerRef} from "@angular/core";
 import {User} from "./user.model";
 import {AdminService} from "../admin.service";
 import {FormGroup, FormArray, FormControl} from "@angular/forms";
-import {Observable} from "rxjs";
 import findIndex = require("core-js/fn/array/find-index");
 import {deleteUserModel} from "./deleteUserGroup.model";
+import {Modal} from 'angular2-modal/plugins/bootstrap'
+import {Overlay} from "angular2-modal";
 
 @Component({
     selector: 'remove-user',
@@ -35,14 +36,6 @@ import {deleteUserModel} from "./deleteUserGroup.model";
                         <button class="btn btn-primary">Remove Users</button>
                         <button type="button" class="btn btn-success" (click)="addUser()">+</button>
                     </span>
-                    <!--<div formArrayName="usersToDelete">-->
-                        <!--<div *ngFor="let user of usersToDelete.controls; let i = index">-->
-                            <!--<span class="inputRowSpan">-->
-                                <!--<input type="text" id="i" class="form-control">-->
-                                <!--<button class="btn btn-danger" type="button" (click)="onDelete(i)">-</button>-->
-                            <!--</span>-->
-                        <!--</div>-->
-                    <!--</div>-->
                 </form>`
 })
 
@@ -56,7 +49,10 @@ export class RemoveUserComponent implements OnInit{
 
     get usersToDelete() : FormArray{return this.userForm.get('usersToDelete') as FormArray}
 
-    constructor(private adminService:AdminService){}
+    constructor(private adminService:AdminService,
+                overlay: Overlay,
+                vcRef: ViewContainerRef,
+                private modal: Modal) {overlay.defaultViewContainer = vcRef;}
 
     ngOnInit(){
 
@@ -80,10 +76,10 @@ export class RemoveUserComponent implements OnInit{
         return user ? user.lastName + ", " + user.firstName: user;
     }
 
-    filter(name: string): User[] {
-        console.log("name is: " + name);
-        return this.users.filter(option => new RegExp(`^${name}`, 'gi').test(option.lastName) || new RegExp(`^${name}`, 'gi').test(option.firstName));
-    }
+    // filter(name: string): User[] {
+    //     console.log("name is: " + name);
+    //     return this.users.filter(option => new RegExp(`^${name}`, 'gi').test(option.lastName) || new RegExp(`^${name}`, 'gi').test(option.firstName));
+    // }
 
     deleteUsers(userForm : FormGroup){
 
@@ -109,7 +105,16 @@ export class RemoveUserComponent implements OnInit{
        console.log("id array: " + JSON.stringify(UserModel));
 
         this.adminService.deleteUsers(UserModel)
-            .subscribe(data => console.log(data),
+            .subscribe(data => {
+                                this.modal.alert()
+                                .size('sm')
+                                .showClose(true)
+                                .title('Success!')
+                                .body('You have removed the user(s)')
+                                .open();
+                                this.userForm.reset();
+                                console.log(data)
+                         },
                         error=>console.log(error));
     }
 }

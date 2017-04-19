@@ -1,5 +1,5 @@
 <script src="../admin/users/removeUser.component.ts"></script>
-<form [formGroup]="feedbackForm" (ngSubmit)="submitFeedback(feedbackForm)">
+<form [formGroup]="feedbackGroup" (ngSubmit)="submitFeedback(feedbackGroup)">
     <div class="col-md-8 col-md-offset-2">
         <div>
             <label for="nameBox" id="nameLabel">Name</label>
@@ -9,8 +9,8 @@
                    class="form-control"
                    placeholder="Name"
                    formControlName="nameBox">
-            <div *ngIf="feedbackForm.get('nameBox').errors && feedbackForm.get('nameBox').touched">
-                <div *ngIf="feedbackForm.get('nameBox').errors.required"
+            <div *ngIf="feedbackGroup.get('nameBox').errors && feedbackGroup.get('nameBox').touched">
+                <div *ngIf="feedbackGroup.get('nameBox').errors.required"
                      class="alert alert-danger">
                     :( Tsk Tsk. Name is a required field!
                 </div>
@@ -24,50 +24,61 @@
                    class="form-control"
                    placeholder="Product / Project Name"
                    formControlName="productBox">
-            <div *ngIf="feedbackForm.get('productBox').errors && feedbackForm.get('productBox').touched">
-                <div *ngIf="feedbackForm.get('productBox').errors.required"
+            <div *ngIf="feedbackGroup.get('productBox').errors && feedbackGroup.get('productBox').touched">
+                <div *ngIf="feedbackGroup.get('productBox').errors.required"
                      class="alert alert-danger">
                     :( Tsk Tsk. Product / project is a required field!
                 </div>
             </div>
         </div>
-        <div>
-            <label for="upsBox" id="upsLabel">Ups</label>
-            <br>
-            <textarea formControlName="upsBox"
-                      id="upsBox"
-                      rows="10"
-                      cols="40"
-                      class="form-control"
-                      placeholder="What were the ups for the week?">
-          </textarea>
-            <div *ngIf="feedbackForm.get('upsBox').errors && feedbackForm.get('upsBox').touched">
-                <div *ngIf="feedbackForm.get('upsBox').errors.required"
-                     class="alert alert-danger">
-                    :( Tsk Tsk. Weekly ups feedback required!
+
+        <h2 id="upsLabel">Ups</h2>
+        <div formArrayName="upsBox">
+            <div *ngFor="let upsControl of upsBox.controls; let i = index">
+                <br>
+                <span class="labelLine">
+                    <label>{{goalsArr[i].toString()}}</label>
+                    <textarea [formControlName]="i"
+                              id="upsBox"
+                              rows="3"
+                              cols="60"
+                              class="form-control"
+                              placeholder="What were the ups for the week?">
+                    </textarea>
+                </span>
+                <div *ngIf="upsBox.controls[i].errors && upsBox.controls[i].touched">
+                    <div *ngIf="upsBox.controls[i].errors.required"
+                         class="alert alert-danger">
+                        :( Tsk Tsk. Weekly ups feedback required!
+                    </div>
                 </div>
             </div>
         </div>
-        <div>
-            <label for="downsBox" id="downsLabel">Downs</label>
-            <br>
-            <textarea formControlName="downsBox"
-                      rows="10"
-                      cols="40"
-                      id="downsBox"
-                      class="form-control"
-                      placeholder="What were the downs for the week?">
-          </textarea>
-            <div *ngIf="feedbackForm.get('downsBox').errors && feedbackForm.get('downsBox').touched">
-                <div *ngIf="feedbackForm.get('downsBox').errors.required"
-                     class="alert alert-danger">
-                    :( Tsk Tsk. Weekly downs feedback required!
+        <h2 id="downsLabel">Downs</h2>
+        <div formArrayName="downsBox">
+            <div *ngFor="let downsControl of downsBox.controls; let i = index">
+                <br>
+                <span class="labelLine">
+                    <label>{{goalsArr[i].toString()}}</label>
+                    <textarea [formControlName]="i"
+                              id="downsBox"
+                              rows="3"
+                              cols="60"
+                              class="form-control"
+                              placeholder="What were the ups for the week?">
+                    </textarea>
+                </span>
+                <div *ngIf="downsBox.controls[i].errors && downsBox.controls[i].touched">
+                    <div *ngIf="downsBox.controls[i].errors.required"
+                         class="alert alert-danger">
+                        :( Tsk Tsk. Weekly ups feedback required!
+                    </div>
                 </div>
             </div>
         </div>
         <div>
             <button class="btn btn-primary"
-                    [disabled]="!feedbackForm.valid">
+                    [disabled]="!feedbackGroup.valid">
                 Submit
             </button>
         </div>

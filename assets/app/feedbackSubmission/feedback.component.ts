@@ -2,16 +2,15 @@
  * Created by TXL8009 on 3/13/2017.
  */
 
-import {Inject, Component, ViewContainerRef} from "@angular/core";
-import {FormGroup, FormBuilder, Validators} from "@angular/forms";
+import {Component, OnInit, ViewContainerRef} from "@angular/core";
+import {FormGroup, Validators, FormControl, FormArray} from "@angular/forms";
 
 import {feedbackService} from "./feedback.service";
 import {Feedback} from "./feedback.model";
 
-import { Modal } from 'angular2-modal/plugins/bootstrap';
+import {MdDialog} from "@angular/material";
+import {Modal} from 'angular2-modal/plugins/bootstrap'
 import {Overlay} from "angular2-modal";
-import {ThankYouComponent} from "../modals/thankYouModal.component";
-import {MdDialog, DialogPosition} from "@angular/material";
 
 @Component({
     selector: 'Form-template',
@@ -20,42 +19,72 @@ import {MdDialog, DialogPosition} from "@angular/material";
     providers: [feedbackService]
 })
 
-export class FeedbackComponent  {
-    feedbackForm : FormGroup;
+export class FeedbackComponent implements OnInit{
 
-    constructor(@Inject(FormBuilder) fb : FormBuilder,
+    groupID : string;
+    goalID : String;
+    goalsArr : String[]=[];
+    feedbackGroup = new FormGroup({
+        nameBox: new FormControl('', Validators.required),
+        productBox: new FormControl('', Validators.required),
+        upsBox: new FormArray([]),
+        downsBox: new FormArray([])
+    });
+
+    constructor(
                  private feedbackService: feedbackService,
-                 private dialog : MdDialog){
+                 overlay: Overlay,
+                 vcRef: ViewContainerRef,
+                 private modal: Modal) {
+                    overlay.defaultViewContainer = vcRef;
+                }
 
-        this.feedbackForm = fb.group({
 
-            nameBox: ['',Validators.required],
+    get upsBox() : FormArray {return this.feedbackGroup.get('upsBox') as FormArray}
+    get downsBox(): FormArray {return this.feedbackGroup.get('downsBox') as FormArray}
 
-            productBox: ['', Validators.required],
+    ngOnInit(){
+                this.groupID = this.feedbackService.getGroupID();
 
-            upsBox: ['',Validators.required],
+                this.feedbackService.getFeedbackGoals(this.groupID)
+                    .subscribe(data=>{
+                        this.goalsArr = data.goals;
+                        this.goalID = data._id;
+                        console.log(this.goalsArr);
 
-            downsBox: ['',Validators.required],
-        });
+                        this.goalsArr.forEach(item=>{
+                            this.upsBox.push(new FormControl('', Validators.required));
+                            this.downsBox.push(new FormControl('', Validators.required));
+                        })
+                    },
+                    error => console.log(error));
     }
 
     submitFeedback(group : FormGroup){
         const feedback = new Feedback(  group.get('nameBox').value,
                                         group.get('productBox').value,
                                         group.get('upsBox').value,
-                                        group.get('downsBox').value);
+                                        group.get('downsBox').value,
+                                        localStorage.getItem('userId'),
+                                        this.groupID,
+                                        this.goalID
+                                        );
 
         if(confirm("Is the data entered what you want to submit?")){
-            this.dialog.open(ThankYouComponent);
-            // this.feedbackService.addFeedback(feedback)
-            //                     .subscribe(
-            //                         data => {
-            //                             console.log(data);
-            //                             this.dialog.open(ThankYouComponent)
-            //                             this.feedbackForm.reset();
-            //                         },
-            //                         error => console.log(error)
-            //                     );
+
+            this.feedbackService.addFeedback(feedback)
+                                .subscribe(
+                                    data => {
+                                        console.log(data);
+                                        this.modal.alert()
+                                            .size('lg')
+                                            .showClose(true)
+                                            .title('Success!')
+                                            .body('Thank you for your Submission')
+                                            .open();
+                                    },
+                                    error => console.log(error)
+                                );
         }
     }
 }
