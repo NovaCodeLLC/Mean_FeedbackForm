@@ -7,7 +7,6 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 
 var appRoutes = require('./routes/app');
-var messageRoutes = require('./routes/messages');
 var userRoutes = require('./routes/user');
 var feedbackRoutes = require('./routes/feedbacks');
 var adminRoutes = require('./routes/admin');
@@ -34,7 +33,6 @@ app.use(function (req, res, next) {
     next();
 });
 
-app.use('/message', messageRoutes);
 app.use('/user', userRoutes);
 app.use('/feedback', feedbackRoutes);
 app.use('/admin', adminRoutes);

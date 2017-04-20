@@ -91,6 +91,8 @@ export class GoalComponent implements OnInit{
                         this.goalId = data.obj._id;
                 },
                     (error : any) =>{
+
+                        this.goalId = null;
                         console.log(error);
                     });
         }
@@ -143,6 +145,7 @@ export class GoalComponent implements OnInit{
                                 this.goals.push(new FormControl());
                             }
                         });
+
                         this.goals.push(new FormControl());
                         this.goalId = data.obj._id;
 
