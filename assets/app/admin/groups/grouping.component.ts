@@ -12,7 +12,6 @@ import {FormGroup, FormArray, FormControl, Validators} from "@angular/forms";
 import {User} from "../users/user.model";
 import {Group} from "./group.model";
 import {Response} from "@angular/http";
-import {isNull} from "util";
 import {isNullOrUndefined} from "util";
 import {Overlay} from "angular2-modal";
 import {Modal} from 'angular2-modal/plugins/bootstrap'

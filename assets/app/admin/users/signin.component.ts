@@ -18,10 +18,11 @@ export class SigninComponent {
             .subscribe((data : any)=>{
                 localStorage.setItem('token', data.token);
                 localStorage.setItem('userId', data.userId);
-                localStorage.setItem('groupID', data.groupID)
+                localStorage.setItem('groupID', data.groupID);
+                localStorage.setItem('role', data.role);
                 this.router.navigateByUrl('/feedback');
             },
-            )
+            );
         this.myForm.reset();
     }
 

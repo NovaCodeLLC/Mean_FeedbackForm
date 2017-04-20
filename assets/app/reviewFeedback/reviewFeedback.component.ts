@@ -22,22 +22,26 @@ import "rxjs/Rx"
 export class reviewFeedbackComponent{
     //variable declarations
     @Input() feedback : Feedback;
+    @Input() goalsArr : String[];
     @Output()
     change: EventEmitter<Feedback> = new EventEmitter<Feedback>();
 
-
     constructor(private reviewFeedbackServices : reviewFeedbackService){}
 
+
     //when user edits a card's value, it assigns it to the local instance's corresponding field
-    changeData(newValue : string, propertyName : String){
+    changeData(newValue : string, propertyName : String, i:number, feedback : Feedback){
+
+        console.log("new value = " + newValue + " ; propertyName = " + propertyName);
+
         switch (propertyName){
             case "upsBox":
                 if(newValue != null){
                     newValue = newValue.replace(/(\r\n|\n|\r)/gm," ");
                     newValue = newValue.trim();
-                    this.feedback.upsBox = newValue;
+                    this.feedback.upsBox[i] = newValue;
                 } else {
-                    this.feedback.upsBox = null;
+                    this.feedback.upsBox[i] = null;
                 }
                 break;
 
@@ -45,15 +49,21 @@ export class reviewFeedbackComponent{
                 if(newValue != null){
                     newValue = newValue.replace(/(\r\n|\n|\r)/gm," ");
                     newValue = newValue.trim();
-                    this.feedback.downsBox = newValue;
+                    this.feedback.downsBox[i] = newValue;
                 } else {
-                    this.feedback.downsBox = null;
+                    this.feedback.downsBox[i] = null;
                 }
                 break;
         }
 
         //static class used to track all the dirty elements on the page
-        dirtyElements.feedbacks.push(this.feedback);
+        if(dirtyElements.feedbacks.indexOf(feedback) == -1) {
+            dirtyElements.feedbacks.push(this.feedback);
+        } else {
+            dirtyElements.feedbacks[dirtyElements.feedbacks.indexOf(feedback)] = this.feedback;
+        }
+
+        console.log(dirtyElements.feedbacks);
     }
 
     //calls the delete service.  When a response is send an event emitter transmitting the deleted item's data.

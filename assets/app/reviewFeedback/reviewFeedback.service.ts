@@ -19,8 +19,8 @@ export class reviewFeedbackService{
 
     constructor(private http: Http) {}
 
-    getFeedback(){
-        return this.http.get('http://localhost:3000/feedback')
+    getFeedback(groupID : string){
+        return this.http.get('http://localhost:3000/feedback/' + groupID)
             .map(res => {
                 const feedbacks = res.json().obj;
                 let transformedFeedback : Feedback[] = [];
@@ -30,7 +30,10 @@ export class reviewFeedbackService{
                                         feedback.productBox,
                                         feedback.upsBox,
                                         feedback.downsBox,
-                                        feedback._id));
+                                        feedback._id,
+                                        feedback.userID,
+                                        feedback.groupID,
+                                        feedback.goalID));
                 }
                 return transformedFeedback;
             })

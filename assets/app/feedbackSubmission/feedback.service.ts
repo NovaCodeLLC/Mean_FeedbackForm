@@ -18,6 +18,12 @@ export class feedbackService{
 
     constructor(private http: Http) {}
 
+    getName(userId : String){
+        return this.http.get('http://localhost:3000/feedback/username/' + userId)
+            .map((res:Response)=>{return res.json()})
+            .catch((error:Response)=> Observable.throw(error.json()));
+    }
+
     addFeedback(feedback: Feedback) {
         const body = JSON.stringify(feedback);
         const headers = new Headers({'Content-Type': 'application/json'});

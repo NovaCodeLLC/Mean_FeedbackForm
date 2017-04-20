@@ -8,7 +8,6 @@ import {FormGroup, Validators, FormControl, FormArray} from "@angular/forms";
 import {feedbackService} from "./feedback.service";
 import {Feedback} from "./feedback.model";
 
-import {MdDialog} from "@angular/material";
 import {Modal} from 'angular2-modal/plugins/bootstrap'
 import {Overlay} from "angular2-modal";
 
@@ -46,6 +45,9 @@ export class FeedbackComponent implements OnInit{
     ngOnInit(){
                 this.groupID = this.feedbackService.getGroupID();
 
+                this.feedbackService.getName(localStorage.getItem('userId'))
+                    .subscribe(data=>this.feedbackGroup.get('nameBox').setValue(data.obj.firstName + " " + data.obj.lastName));
+
                 this.feedbackService.getFeedbackGoals(this.groupID)
                     .subscribe(data=>{
                         this.goalsArr = data.goals;
@@ -65,6 +67,7 @@ export class FeedbackComponent implements OnInit{
                                         group.get('productBox').value,
                                         group.get('upsBox').value,
                                         group.get('downsBox').value,
+                                        '',
                                         localStorage.getItem('userId'),
                                         this.groupID,
                                         this.goalID
@@ -73,18 +76,31 @@ export class FeedbackComponent implements OnInit{
         if(confirm("Is the data entered what you want to submit?")){
 
             this.feedbackService.addFeedback(feedback)
-                                .subscribe(
-                                    data => {
-                                        console.log(data);
-                                        this.modal.alert()
-                                            .size('lg')
-                                            .showClose(true)
-                                            .title('Success!')
-                                            .body('Thank you for your Submission')
-                                            .open();
-                                    },
-                                    error => console.log(error)
-                                );
+                                .subscribe(data => {console.log(data);},
+
+                                            //error handling
+                                            error => {
+                                                        console.log(error);
+                                                        this.modal.alert()
+                                                            .size('lg')
+                                                            .showClose(true)
+                                                            .title('Error!')
+                                                            .body('Uh oh! an Error has occurred. Give this to your admin:' + `<br><br>` +
+                                                                    error)
+                                                            .open();
+                                            },
+
+                                            //subscription successful and Submission completed
+                                            ()=>{
+                                                this.modal.alert()
+                                                    .size('lg')
+                                                    .showClose(true)
+                                                    .title('Success!')
+                                                    .body('Thank you for your Submission')
+                                                    .open();
+
+                                                this.feedbackGroup.reset();
+                                            });
         }
     }
 }

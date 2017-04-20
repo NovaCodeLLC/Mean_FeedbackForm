@@ -8,10 +8,41 @@ var mongoose = require('mongoose');
 var Group = require('../models/group');
 var Goals = require('../models/goals');
 var Feedback = require('../models/feedback');
+var User = require('../models/user');
 
-router.get('/', function (req, res, next) {
-    Feedback.find()
-        .exec(function (err, feedback) {
+router.get('/username/:userId', function(req, res, err){
+
+    console.log(req.params.userId);
+
+    User.findById(req.params.userId, function (err, userName) {
+        if(err){
+            return res.status(500).json({
+               title: 'An Error has Occurred',
+                error: err
+            });
+        }//end error if
+
+        if(!userName){
+            return res.status(500).json({
+                title: 'An Error has Occurred',
+                obj: userName
+            });
+        }//end null user if
+
+        res.status(200).json({
+           title: 'Success! user found',
+            obj: userName
+        });
+    }); //end search for User name / callback
+}); // end get userName route
+
+router.get('/:groupID', function (req, res, next) {
+    var ID = req.params.groupID;
+    var query = {groupID: new mongoose.mongo.ObjectId(ID)};
+
+    console.log("get feedback by groupID query: " + JSON.stringify(query));
+
+    Feedback.find(query ,function(err,feedback){
             if (err) {
                 return res.status(500).json({
                     title:'An error occurred',
@@ -22,16 +53,20 @@ router.get('/', function (req, res, next) {
                 message:'Success',
                 obj:feedback
             });
-        });
-});
+        });//end find Feedback / callback
+});//end get feedback route
 
 router.post('/', function (req, res, next) {
     var feedback = new Feedback({
         nameBox: req.body.nameBox,
         productBox: req.body.productBox,
         upsBox: req.body.upsBox,
-        downsBox: req.body.downsBox
+        downsBox: req.body.downsBox,
+        userID: req.body.userID,
+        groupID: req.body.groupID,
+        goalID: req.body.goalID
     });
+
     feedback.save(function (err, result) {
         if (err) {
             return res.status(500).json({
@@ -141,6 +176,8 @@ router.delete('/:id', function(req, res, next) {
 router.get('/goals/:groupID', function(req, res, err){
 
     var ID = new mongoose.mongo.ObjectId(req.params.groupID);
+
+    console.log("mark groupID");
 
     Group.findOne( {_id: ID} , function (err, groupInfo) {
             if (err) {

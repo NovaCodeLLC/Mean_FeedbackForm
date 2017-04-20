@@ -53,7 +53,8 @@ router.post('/signin', function (req, res, next) {
             message: 'Login Successful',
             token: token,
             userId: user._id,
-            groupID: user.groupID
+            groupID: user.groupID,
+            role: user.role
         });
    });
 });

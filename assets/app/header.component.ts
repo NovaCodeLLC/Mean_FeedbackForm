@@ -8,7 +8,7 @@ import {Router} from "@angular/router";
         <header class="row">
             <nav class="col-md-8 col-md-offset-2">
                 <ul class="nav nav-pills pull-left">
-                    <li routerLinkActive="active"><a [routerLink]="['/admin']" *ngIf = 'isLoggedIn()'>Admin</a></li>
+                    <li routerLinkActive="active"><a [routerLink]="['/admin']" *ngIf = 'isLoggedIn() && isUserAdmin()'>Admin</a></li>
                     <li routerLinkActive="active"><a [routerLink]="['/feedback']" *ngIf = 'isLoggedIn()'>Feedback</a></li>
                     <li routerLinkActive="active"><a [routerLink]="['/reviewFeedback']" *ngIf = 'isLoggedIn()'>Review</a></li>
                 </ul>
@@ -22,6 +22,10 @@ import {Router} from "@angular/router";
 })
 export class HeaderComponent {
     constructor(private authService:AdminService, private router : Router){}
+
+    isUserAdmin(){
+        return this.authService.isAdmin();
+    }
 
     isLoggedIn(){
         return this.authService.isLoggedIn();

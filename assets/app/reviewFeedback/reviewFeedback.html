@@ -1,4 +1,4 @@
-<article id="feedbackBlock" *ngIf = "feedback">
+<article id="feedbackBlock" *ngIf = "goalsArr && feedback">
     <div class="card mb-3 text-center" id="titlingBlock">
         <button type="button" id="deleteBtn" (click)="onDelete()">X</button>
         <div class="card-block">
@@ -9,32 +9,38 @@
         </div>
     </div>
     <span>
-        <div class="card mb-3 text-center" id="weeklyUps">
-            <div class="card-block">
-                <blockquote class="card-blockquote">
-                    <header id="upsMargin">Weekly Project Ups</header>
-                    <br>
-                    <p contenteditable="true"
-                       id="upsContent"
-                       #newUpsText (blur)="changeData(newUpsText.textContent, 'upsBox')">
-                            {{feedback.upsBox}}
-                    </p>
-                </blockquote>
-            </div>
+        <div class="panel">
+              <!-- Default panel contents -->
+              <div class="panel-heading heading-ups">Weekly Ups</div>
+
+            <!-- List group -->
+
+              <ul class="list-group" *ngFor="let goal of goalsArr; let i = index">
+                  <li class="list-group-item">{{goal}} :
+                      <p contenteditable="true" [textContent]="feedback.upsBox[i]"
+                         (blur)="changeData(feedback.upsBox[i]=$event.target.textContent, 'upsBox', i, feedback)">
+                        {{feedback.upsBox[i]}}
+                      </p>
+                  </li>
+              </ul>
         </div>
     </span>
-    <div class="card text-center" id="weeklyDowns">
-        <div class="card-block">
-            <blockquote class="card-blockquote">
-                <header id="downsMargin">Weekly Project Downs</header>
-                <br>
-                <p contenteditable="true"
-                   #newDownsText
-                   (blur)="changeData(newDownsText.textContent, 'downsBox')">
-                        {{feedback.downsBox}}
-                </p>
-            </blockquote>
+    <span>
+        <div class="panel">
+              <!-- Default panel contents -->
+              <div class="panel-heading heading-downs">Weekly Downs</div>
+
+            <!-- List group -->
+
+              <ul class="list-group" *ngFor="let goal of goalsArr; let i = index">
+                  <li class="list-group-item">{{goal}} :
+                      <p contenteditable="true" [textContent]="feedback.downsBox[i]"
+                         (blur)="changeData(feedback.downsBox[i]=$event.target.textContent, 'downsBox', i, feedback)">
+                        {{feedback.downsBox[i]}}
+                      </p>
+                  </li>
+              </ul>
         </div>
-    </div>
+    </span>
     <hr>
 </article>

@@ -97,10 +97,22 @@ export class AdminService{
     }
 
     isAdmin(){
-        return localStorage.getItem('Security') == "968";
+        return localStorage.getItem('role') == "Admin";
     }
 
     isManager(){
-        return localStorage.getItem('Security') == "729"
+        return localStorage.getItem('role') == "Manager"
+    }
+
+    isDirecotr(){
+        return localStorage.getItem('role') == "Director"
+    }
+
+    isContributor(){
+        return localStorage.getItem('role') == "Contributor"
+    }
+
+    getGroupID(){
+        return localStorage.getItem('Group')
     }
 }

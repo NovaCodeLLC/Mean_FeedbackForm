@@ -10,12 +10,15 @@ import {Overlay} from "angular2-modal";
 
 import {reviewFeedbackService} from "./reviewFeedback.service";
 import "rxjs/Rx"
+import {feedbackService} from "../feedbackSubmission/feedback.service";
+import {Goals} from "../admin/feedbackgoals/goals.model";
 
 @Component({
     selector: 'listFeedback',
     template: `<button type="button" id="pushUpdates" (click)="pushDataToDatabase()">Update Forms with Changes</button>
                     <singleFeedback 
                     [feedback]="feedback"
+                    [goalsArr] = "goalsArr"
                      (change)="feedbacksChanged($event)"
                     *ngFor="let feedback of feedbacks"></singleFeedback>
                 `,
@@ -34,15 +37,16 @@ import "rxjs/Rx"
                     background-color: aliceblue;
                 }
             `],
-    providers: [reviewFeedbackService]
+    providers: [reviewFeedbackService, feedbackService]
 })
 
 export class listReviewFeedbackComponent implements OnInit{
     //variable declaration
     private feedbacks : Feedback[];
+    private goalsArr : String[] = [];
 
     //initialize our service
-    constructor(private reviewFeedbackService : reviewFeedbackService,
+    constructor(private reviewFeedbackService : reviewFeedbackService, private feedbackService : feedbackService,
                 overlay: Overlay,
                 vcRef: ViewContainerRef,
                 private modal: Modal) {
@@ -51,16 +55,33 @@ export class listReviewFeedbackComponent implements OnInit{
 
     //initialize the data
     ngOnInit(){
-        this.reviewFeedbackService.getFeedback()
+        //warning ... dragons below!
+        //this code first gets a list of feedback items and then a list of goal items
+        //it then combines both lists into a single list to use later
+        this.reviewFeedbackService.getFeedback(localStorage.getItem('groupID'))
                                 .subscribe(
                                     (data : Feedback[]) =>{
                                         this.feedbacks = data;
+                                    },
+                                    error => console.log(error),
+                                    ()=>{
+                                        this.feedbackService.getFeedbackGoals(localStorage.getItem('groupID'))
+                                            .subscribe(data=>{
+                                                console.log("goals");
+                                                this.goalsArr = data.goals;
+                                            },
+                                            error=>console.log(error),
+                                                ()=>{
+                                                    console.log(this.goalsArr);
+                                                    console.log(this.feedbacks);
+                                                });
                                     }
-                                )
+                                );
     }
 
     //pushes all items in the dirtyElements array to the database
     pushDataToDatabase(){
+        console.log("dirty element length: " + dirtyElements.feedbacks.length);
         if(dirtyElements.feedbacks.length >= 1){
             console.log("Initiating service request");
            this.reviewFeedbackService.patchFeedback(dirtyElements.feedbacks)
